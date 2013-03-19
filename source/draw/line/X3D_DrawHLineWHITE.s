@@ -68,7 +68,7 @@ X2Valid:
 	
 DrawStart:	
 	and.w	%d0, (%a0)+	| Draw the starting mask
-	move.l	#0, %d0
+	moveq	#0, %d0
 	move.w	#32, %d2
 	sub.w	%d2, %d3		
 	blt.s	WrapUp		| If there are less than 32 pixels left to draw

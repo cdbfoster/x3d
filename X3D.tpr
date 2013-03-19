@@ -50,7 +50,7 @@ Use Return Value=0
 Enable Error Return=0
 Save Screen=1
 [File Editing]
-Open File=C:\Users\Chris\TI Projects\X3D Engine\X3D Engine\source\draw\line\Normal Line Drawers.c
+Open File=C:\Users\Chris\TI Projects\X3D Engine\X3D Engine\source\draw\screen\X3D_CopyScreen.s
 [Included Files]
 C File 1=source\system\X3D.c
 C File 2=source\math\Trig Tables.c

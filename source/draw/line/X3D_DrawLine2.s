@@ -97,7 +97,6 @@ SetupPoints:
 	sub.w	%d1, %d3	| dy
 	
 	bpl.s	0f
-	moveq	#-128, %d5
 	neg.w	%d3
 	moveq	#-30, %d4
 	bra.s	1f

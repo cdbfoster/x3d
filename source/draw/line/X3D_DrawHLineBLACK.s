@@ -20,7 +20,7 @@
 
 .global X3D_DrawHLineBLACK
 X3D_DrawHLineBLACK:
-	move.l	%d3, %a1	| Save %d3 in %a1.  Faster than dealing with the stack.
+	movea.l	%d3, %a1	| Save %d3 in %a1.  Faster than dealing with the stack.
 	cmp.w	%d0, %d1	| Make sure x1 is less than x2
 	bge.s	NoExchange
 	exg	%d0, %d1

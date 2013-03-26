@@ -193,7 +193,8 @@ extern void X3D_FillGrayPolygon(unsigned char *Plane1, unsigned char *Plane2, un
 
 // Screen
 extern void X3D_ClearScreen(void *Plane asm("%a0"));
-extern void X3D_CopyScreen(void *src asm("%a0"),void *dst asm("%a1"));
+extern void X3D_FillScreen(void *Plane asm("%a0"));
+extern void X3D_CopyScreen(void *Source asm("%a0"),void *Destination asm("%a1"));
 
 // Trigonometric
 extern const short X3D_SinTable[512];

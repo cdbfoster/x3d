@@ -96,7 +96,7 @@
 #define X3D_ScreenTest(x, y)		(x >= 0 && x <= X3D_SCREEN_WIDTH && y >= 0 && y <= X3D_SCREEN_HEIGHT)
 #define X3D_Switch(x, y)				asm("exg %0, %1" : "=d" (x), "=d" (y) : "0" (x), "1" (y))
 #define X3D_WrapAngle(x)				((x) & 0x01FF)
-#define X3D_Shift(x, y)					(((x) >= (y)) ? ((x) - (y)) : (x))
+#define X3D_Wrap(x, y)					(((x) >= (y)) ? ((x) - (y)) : (x))
 
 //#define X3D_SetEngineShift(x)			(X3D.EngineShift = (x))
 //#define X3D_SetEngineFlag(Flag)		(X3D.EngineState |= Flag)
@@ -163,7 +163,7 @@ typedef struct {
 	unsigned char ColorMode;
 	unsigned char BackfaceCullMode;
 	unsigned char OutlineMode;
-	
+
 	void *Plane1, *Plane2; // Light and Dark planes, respectively
 } X3D_Parameters;
 
@@ -177,8 +177,11 @@ extern X3D_RESULT X3D_UpdateCamera(X3D_Camera *Camera);
 extern X3D_RESULT X3D_Render(X3D_Camera *Camera, unsigned short VertexCount, X3D_VertexStream *VertexStream, unsigned short FaceCount, X3D_FaceStream *FaceStream);
 
 // Drawing
-extern void X3D_DrawLine(void *Plane, short x1, short y1, short x2, short y2, unsigned char Color);
-extern void X3D_DrawGrayLine(void *Plane1, void *Plane2, short x1, short y1, short x2, short y2, unsigned char Color);
+extern X3D_RESULT X3D_ClipLine(short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), short *ClippedCoordinates asm("%a0"));
+extern void X3D_DrawLine(void *Plane asm("%a0"), short x1 asm("%d0"), short y1 asm("%d1"), short x2 asm("%d2"), short y2 asm("%d3"), unsigned char Color);
+extern void X3D_DrawLine_Clipped(void *Plane asm("%a0"), short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), unsigned char Color);
+extern void X3D_DrawGrayLine(void *Plane1 asm("%a0"), void *Plane2 asm("%a1"), short x1 asm("%d0"), short y1 asm("%d1"), short x2 asm("%d2"), short y2 asm("%d3"), unsigned char Color);
+extern void X3D_DrawGrayLine_Clipped(void *Plane1 asm("%a0"), void *Plane2 asm("%a1"), short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), unsigned char Color);
 extern void X3D_DrawHLineWHITE(short *Address asm("%a0"), short x1 asm("%d0"), short x2 asm("%d1"));
 extern void X3D_DrawHLineBLACK(short *Address asm("%a0"), short x1 asm("%d0"), short x2 asm("%d1"));
 extern void X3D_DrawGrayHLineWHITE(short *Address1 asm("%a0"), short *Address2 asm("%a1"), short x1 asm("%d0"), short x2 asm("%d1"));
@@ -188,17 +191,10 @@ extern void X3D_DrawGrayHLineBLACK(short *Address1 asm("%a0"), short *Address2 a
 extern void X3D_FillPolygon(unsigned char *Plane, unsigned char PointCount, X3D_Vec2 *Points, unsigned char Color);
 extern void X3D_FillGrayPolygon(unsigned char *Plane1, unsigned char *Plane2, unsigned char PointCount, X3D_Vec2 *Points, unsigned char Color);
 
-// Experimental
-extern void X3D_DrawLine2(void *Plane asm("%a0"), short x1 asm("%d0"), short y1 asm("%d1"), short x2 asm("%d2"), short y2 asm("%d3"), unsigned char Color);
-extern void X3D_DrawGrayLine2(void *Plane1 asm("%a0"), void *Plane2 asm("%a1"), short x1 asm("%d0"), short y1 asm("%d1"), short x2 asm("%d2"), short y2 asm("%d3"), unsigned char Color);
-extern X3D_RESULT X3D_ClipLine(short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), short *ClippedCoordinates asm("%a0"));
-extern void X3D_DrawLine2_Clipped(void *Plane asm("%a0"), short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), unsigned char Color);
-extern void X3D_DrawGrayLine2_Clipped(void *Plane1 asm("%a0"), void *Plane2 asm("%a1"), short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), unsigned char Color);
-
-
 // Screen
 extern void X3D_ClearScreen(void *Plane asm("%a0"));
-extern void X3D_CopyScreen(void *src asm("%a0"),void *dst asm("%a1"));
+extern void X3D_FillScreen(void *Plane asm("%a0"));
+extern void X3D_CopyScreen(void *Source asm("%a0"),void *Destination asm("%a1"));
 
 // Trigonometric
 extern const short X3D_SinTable[512];

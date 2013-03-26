@@ -5,12 +5,12 @@
 // Internal Variables
 X3D_Parameters EngineParameters;
 
-// Forward Declaration of Local Functions========
+// Forward Declaration of Local Functions =======
 unsigned short ClipPolygonOnPlane(X3D_ClippedFace *Face, X3D_Vec3 *Vertices, X3D_Plane *Plane, unsigned short OverflowVertexCount, X3D_Vec3 *OverflowVertexBuffer);
 short ClipEdgeOnPlane(X3D_Vec3 *Vertex1, X3D_Vec3 *Vertex2, X3D_Plane *Plane, unsigned short *OverflowVertexCount, X3D_Vec3 *OverflowVertexBuffer);
 unsigned char VertexOutsideFrustum(X3D_Vec3 *Vertex, X3D_Plane *Frustum);
 
-// Global Functions==============================
+// Global Functions =============================
 void X3D_SetEngineParameters(X3D_Parameters *Parameters)
 {
 	if (!Parameters)
@@ -338,7 +338,7 @@ X3D_RESULT X3D_Render(X3D_Camera *Camera, unsigned short VertexCount, X3D_Vertex
 			Polygon[Vertex] = *((X3D_Vec2 *)CurrentVertex);
 			//printf("%d: %d, %d, %d\n", VertexIndex, Polygon[Vertex].x, Polygon[Vertex].y, CurrentVertex->z);
 		}
-		X3D_FillPolygon(Plane1, VertexCount, Polygon, X3D_COLORS_BLACK);//ClippedFaces[Face].Color);
+		X3D_FillConvexPolygon(Plane1, VertexCount, Polygon, X3D_COLORS_BLACK);//ClippedFaces[Face].Color);
 	}
 	/*
 		For each face
@@ -412,7 +412,7 @@ X3D_RESULT X3D_Render(X3D_Camera *Camera, unsigned short VertexCount, X3D_Vertex
 
 
 
-// Local Functions===============================
+// Local Functions ==============================
 unsigned short ClipPolygonOnPlane(X3D_ClippedFace *Face, X3D_Vec3 *Vertices, X3D_Plane *Plane, unsigned short OverflowVertexCount, X3D_Vec3 *OverflowVertexBuffer)
 {
 	//printf("ClipPolygonOnPlane\n");

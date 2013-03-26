@@ -17,9 +17,9 @@
 
 #define _GENERIC_ARCHIVE
 
-#include "X3D.h"
+#include "../../X3D.h"
 
-void X3D_FillPolygon(unsigned char *Plane, unsigned char PointCount, X3D_Vec2 *Points, unsigned char Color)
+void X3D_FillConvexPolygon(unsigned char *Plane, unsigned char PointCount, X3D_Vec2 *Points, unsigned char Color)
 {
 	void (*DrawHLine)(short *Address asm("%a0"), short x1 asm("%d0"), short x2 asm("%d1"));
 

@@ -24,7 +24,7 @@
 .global X3D_ClipLine
 X3D_ClipLine:
 	movem.l	%d3 - %d7, -(%sp)
-	
+
 	bsr	GetClippingCode		| Just barely missed the opportunity to use a short branch here... sigh.
 	exg	%d0, %d2
 	exg	%d1, %d3
@@ -33,7 +33,7 @@ X3D_ClipLine:
 	move.l	%d4, %d6
 	and.l	%d5, %d6
 	bne	LineRejected		| If both points are clipped by the same side, reject the line
-	
+
 CheckClippingCodes:
 	tst.l	%d4
 	bne.s	ClipBottom
@@ -42,7 +42,7 @@ CheckClippingCodes:
 	exg	%d0, %d2
 	exg	%d1, %d3
 	exg	%d4, %d5
-	
+
 ClipBottom:
 	tst.b	%d4
 	beq.s	ClipTop
@@ -85,7 +85,7 @@ ClipLeft:
 	bra.s	CheckClippingCodes
 
 ClipRight:
-	
+
 	move.w	%d3, %d6
 	sub.w	%d1, %d6		| dy
 	move.w	%d0, %d7
@@ -98,7 +98,7 @@ ClipRight:
 	bsr.s	GetClippingCode
 	bra.s	CheckClippingCodes
 
-GetClippingCode:	
+GetClippingCode:
 	| Gets the Cohen-Sutherland clipping code for (d0, d1) and stores it in d4
 	| Code Format:
 	| Left Clip	FF 00 00 00
@@ -108,7 +108,7 @@ GetClippingCode:
 
 	tst.w	%d0				| Test Left Clip
 	smi.b	%d4
-	move.b	%d4, -(%sp)			| Swap bytes of the first word of d4 by taking advantage of the 
+	move.b	%d4, -(%sp)			| Swap bytes of the first word of d4 by taking advantage of the
 	move.w	(%sp)+, %d4			| fact that the stack is word-aligned.
 	cmpi.w	#X3D_SCREEN_WIDTH + 1, %d0	| Test Right Clip
 	sge.b	%d4
@@ -125,11 +125,11 @@ LineRejected:
 	movem.w	%d0 - %d3, (%a0)
 	moveq	#-1, %d0		| Return value of X3D_FAILURE
 	bra.s	Exit
-	
+
 LineAccepted:
 	movem.w	%d0 - %d3, (%a0)
 	moveq	#0, %d0			| Return value of X3D_SUCCESS
-	
+
 Exit:
 	movem.l	(%sp)+, %d3 - %d7
 	rts

@@ -23,7 +23,7 @@
 .global X3D_ClearScreen
 X3D_ClearScreen:
 	movem.l	%d3 - %d7 / %a2 - %a5, -(%sp)
-	
+
 	lea	(3000, %a0), %a0
 	moveq	#0, %d0
 	moveq	#0, %d1
@@ -44,10 +44,10 @@ X3D_ClearScreen:
 	movem.l	%d0 - %d6 / %a1 - %a5, -(%a0)
 	movem.l	%d0 - %d6 / %a1 - %a5, -(%a0)
 	dbf	%d7, 0b
-	
+
 	movem.l	%d0 - %d6 / %a1 - %a5, -(%a0)
 	movem.l	%d0 - %d6 / %a1 - %a5, -(%a0)
 	movem.l	%d0 - %d5, -(%a0)
-	
+
 	movem.l	(%sp)+, %d3 - %d7 / %a2 - %a5
 	rts

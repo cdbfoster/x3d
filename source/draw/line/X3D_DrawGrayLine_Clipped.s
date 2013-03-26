@@ -24,7 +24,7 @@
 .global X3D_DrawGrayLine_Clipped
 X3D_DrawGrayLine_Clipped:
 	movem.l	%d3 - %d7 / %a2, -(%sp)
-	
+
 	bsr	GetClippingCode		| Just barely missed the opportunity to use a short branch here... sigh.
 	exg	%d0, %d2
 	exg	%d1, %d3
@@ -33,7 +33,7 @@ X3D_DrawGrayLine_Clipped:
 	move.l	%d4, %d6
 	and.l	%d5, %d6
 	bne	Exit		| If both points are clipped by the same side, reject the line
-	
+
 CheckClippingCodes:
 	tst.l	%d4
 	bne.s	ClipBottom
@@ -42,7 +42,7 @@ CheckClippingCodes:
 	exg	%d0, %d2
 	exg	%d1, %d3
 	exg	%d4, %d5
-	
+
 ClipBottom:
 	tst.b	%d4
 	beq.s	ClipTop
@@ -85,7 +85,7 @@ ClipLeft:
 	bra.s	CheckClippingCodes
 
 ClipRight:
-	
+
 	move.w	%d3, %d6
 	sub.w	%d1, %d6		| dy
 	move.w	%d0, %d7
@@ -98,7 +98,7 @@ ClipRight:
 	bsr.s	GetClippingCode
 	bra.s	CheckClippingCodes
 
-GetClippingCode:	
+GetClippingCode:
 	| Gets the Cohen-Sutherland clipping code for (d0, d1) and stores it in d4
 	| Code Format:
 	| Left Clip	FF 00 00 00
@@ -108,7 +108,7 @@ GetClippingCode:
 
 	tst.w	%d0				| Test Left Clip
 	smi.b	%d4
-	move.b	%d4, -(%sp)			| Swap bytes of the first word of d4 by taking advantage of the 
+	move.b	%d4, -(%sp)			| Swap bytes of the first word of d4 by taking advantage of the
 	move.w	(%sp)+, %d4			| fact that the stack is word-aligned.
 	cmpi.w	#X3D_SCREEN_WIDTH + 1, %d0	| Test Right Clip
 	sge.b	%d4
@@ -120,25 +120,25 @@ GetClippingCode:
 	cmpi.w	#X3D_SCREEN_HEIGHT + 1, %d1	| Test Bottom Clip
 	sge.b	%d4
 	rts
-	
+
 LineAccepted:
 
 	cmp.w	%d0, %d2
 	bhi.s	NoExchange
 	exg	%d0, %d2
 	exg	%d1, %d3
-	
+
 NoExchange:
 	move.w	(6 * 4 + 4, %sp), %d4	| Color parameter
-	
+
 	cmp.b	(PreviousState, %pc), %d4
 	beq.s	PreviousStateOkay
-	
+
 	lea	(PreviousState, %pc), %a2
 	move.b	%d4, (%a2)
-	
+
 	lea	(StateChangeAnchor, %pc), %a2
-	
+
 	move.b	#0x90, %d5	| Changes a bxxx %d5, <ea> instruction into a bclr %d5, (%a0) instruction
 	lsr.b	#1, %d4
 	bcc.s	0f
@@ -146,7 +146,7 @@ NoExchange:
 0:
 	move.b	%d5, (DrawLoop_DXGreater - StateChangeAnchor + 1, %a2)
 	move.b	%d5, (DrawLoop_DYGreater - StateChangeAnchor + 1, %a2)
-	
+
 	move.b	#0x91, %d5	| Changes a bxxx %d5, <ea> instruction into a bclr %d5, (%a1) instruction
 	lsr.b	#1, %d4
 	bcc.s	0f
@@ -156,7 +156,7 @@ NoExchange:
 	move.b	%d5, (DrawLoop_DYGreater - StateChangeAnchor + 2 + 1, %a2)
 
 PreviousStateOkay:
-	
+
 SetupPoints:
 	move.w	%d1, %d4	|
 	add.w	%d4, %d4	|
@@ -168,30 +168,30 @@ SetupPoints:
 	add.w	%d5, %d4	|
 	add.w	%d4, %a0	| Address1 = Plane1 + (y1 * 30) + (x1 /8)
 	add.w	%d4, %a1	| Address2 = Plane2 + (y1 * 30) + (x1 /8)
-	
+
 	move.w	%d0, %d5
 	not.w	%d5
 	andi.b	#7, %d5		| Bit number of the starting point's X value
-	
+
 	sub.w	%d0, %d2	| dx
 	sub.w	%d1, %d3	| dy
-	
+
 	bpl.s	0f		| if dy >= 0
 	neg.w	%d3
 	moveq	#-30, %d4
 	bra.s	1f
 0:
-	moveq	#30, %d4	
+	moveq	#30, %d4
 1:
 	cmp.w	%d3, %d2
 	bls.s	DYGreater
-	
+
 |DXGreater:
 	move.w	%d2, %d0	| Number of times to loop is simply dx
 	move.w	%d2, %d1	|
 	lsr.w	#1, %d1		|
 	sub.w	%d2, %d1	| %d1 = dx / 2 - dx
-	
+
 StateChangeAnchor:
 DrawLoop_DXGreater:
 	bset	%d5, (%a0)
@@ -213,7 +213,7 @@ SameRow:
 Exit:
 	movem.l (%sp)+, %d3 - %d7 / %a2
 	rts
-	
+
 DYGreater:
 	move.w	%d3, %d0	| Number of times to loop is simply dy
 	move.w	%d3, %d1	|
@@ -237,6 +237,6 @@ SameByte2:
 SameColumn:
 	dbf	%d0, DrawLoop_DYGreater
 	bra.s	Exit
-	
+
 PreviousState:
 	.byte	0x03, 0x00	| Previous Color, Padding

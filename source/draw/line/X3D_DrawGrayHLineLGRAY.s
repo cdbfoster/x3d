@@ -24,7 +24,7 @@ X3D_DrawGrayHLineLGRAY:
 	cmp.w	%d0, %d1	| Make sure x1 is less than x2
 	bge.s	NoExchange
 	exg	%d0, %d1
-	
+
 NoExchange:
 	tst.w	%d1		| Make sure the line is on-screen
 	blt.s	Exit		|
@@ -34,12 +34,12 @@ NoExchange:
 	tst.w	%d0		| Clip x1 if necessary
 	bge.s	X1Valid		|
 	moveq	#0, %d0		|
-	
+
 X1Valid:
 	cmpi.w	#160, %d1	| Clip x2 if necessary
 	blt.s	X2Valid		|
 	move.w	#159, %d1	|
-	
+
 X2Valid:
 	move.w	%d0, %d3
 	lsr.w	#4, %d3			| %d3 = x1 / 16 - The word offset of the word containing x1
@@ -47,17 +47,17 @@ X2Valid:
 	add.w	%d3, %d3		| %d3 = The byte offset of the word containing x1
 	adda.w	%d3, %a0		| %a0 now starts at the word containing x1
 	adda.w	%d3, %a1		| %a1 now starts at the word containing x1
-	
+
 	andi.w	#0xF, %d0			| Get the starting mask
 	add.w	%d0, %d0			|
 	move.w	(StartMask, %pc, %d0.w), %d0	|
-	
+
 	move.w	%d1, %d3			| Save x2
-	
+
 	andi.w	#0xF, %d1			| Get the ending mask
 	add.w	%d1, %d1			|
 	move.w	(EndMask, %pc, %d1.w), %d1	|
-	
+
 	addq.w	#1, %d2
 	lsl.w	#4, %d2			| %d2 = 16 * (x1 / 16) + 16
 	sub.w	%d2, %d3		| %d3 = x2 - (16 * (x1 / 16) + 16) - The number of pixels left to draw after the starting mask
@@ -68,33 +68,33 @@ X2Valid:
 	and.w	%d1, (%a1)		|
 	move.l	(%sp)+, %d3		| Restore %d3
 	rts
-	
-DrawStart:	
+
+DrawStart:
 	or.w	%d0, (%a0)+	| Draw the starting mask
 	not.w	%d0		|
 	and.w	%d0, (%a1)+	|
 	move.l	#0xFFFFFFFF, %d0
 	move.w	#32, %d2
-	sub.w	%d2, %d3		
+	sub.w	%d2, %d3
 	blt.s	WrapUp		| If there are less than 32 pixels left to draw
-	
+
 DrawLoop:
 	move.l	%d0, (%a0)+	| Draw 32 pixels
 	clr.l	(%a1)+		|
 	sub.w	%d2, %d3
 	bge.s	DrawLoop	| Loop while there are more than 32 pixels left to draw
-	
+
 WrapUp:
 	cmpi.w	#-16, %d3
 	blt.s	DrawEnd
 	move.w	%d0, (%a0)+
 	clr.w	(%a1)+
-	
+
 DrawEnd:
 	or.w	%d1, (%a0)	| Draw the ending mask
 	not.w	%d1		|
 	and.w	%d1, (%a1)	|
-	
+
 Exit:
 	move.l	(%sp)+, %d3	| Restore d3
 	rts
@@ -116,7 +116,7 @@ StartMask:
 	.word	0x0007
 	.word	0x0003
 	.word	0x0001
-	
+
 EndMask:
 	.word	0x8000
 	.word	0xC000
@@ -134,4 +134,3 @@ EndMask:
 	.word	0xFFFC
 	.word	0xFFFE
 	.word	0xFFFF
-	

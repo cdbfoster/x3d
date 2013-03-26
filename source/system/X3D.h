@@ -96,7 +96,7 @@
 #define X3D_ScreenTest(x, y)		(x >= 0 && x <= X3D_SCREEN_WIDTH && y >= 0 && y <= X3D_SCREEN_HEIGHT)
 #define X3D_Switch(x, y)				asm("exg %0, %1" : "=d" (x), "=d" (y) : "0" (x), "1" (y))
 #define X3D_WrapAngle(x)				((x) & 0x01FF)
-#define X3D_Shift(x, y)					(((x) >= (y)) ? ((x) - (y)) : (x))
+#define X3D_Wrap(x, y)					(((x) >= (y)) ? ((x) - (y)) : (x))
 
 //#define X3D_SetEngineShift(x)			(X3D.EngineShift = (x))
 //#define X3D_SetEngineFlag(Flag)		(X3D.EngineState |= Flag)
@@ -163,7 +163,7 @@ typedef struct {
 	unsigned char ColorMode;
 	unsigned char BackfaceCullMode;
 	unsigned char OutlineMode;
-	
+
 	void *Plane1, *Plane2; // Light and Dark planes, respectively
 } X3D_Parameters;
 

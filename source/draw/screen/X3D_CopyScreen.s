@@ -13,9 +13,9 @@
 |	You should have received a copy of the GNU Lesser General Public License
 |	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
 
-|void X3D_CopyScreen(void *src asm("%a0"),void *dst asm("%a1"));
+| void X3D_CopyScreen(void *Source asm("%a0"),void *Destination asm("%a1"));
 
-|Copies 3000 bytes of src to dst
+| Copies 3000 bytes of Source to Destination
 
 .text
 .even

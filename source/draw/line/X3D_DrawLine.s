@@ -13,13 +13,13 @@
 |	You should have received a copy of the GNU Lesser General Public License
 |	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
 
-| void X3D_DrawLine2(void *Plane asm("%a0"), short x1 asm("%d0"), short y1 asm("%d1"), short x2 asm("%d2"), short y2 asm("%d3"), unsigned char Color);
+| void X3D_DrawLine(void *Plane asm("%a0"), short x1 asm("%d0"), short y1 asm("%d1"), short x2 asm("%d2"), short y2 asm("%d3"), unsigned char Color);
 
 .text
 .even
 
-.global X3D_DrawLine2
-X3D_DrawLine2:
+.global X3D_DrawLine
+X3D_DrawLine:
 	movem.l	%d3 - %d7 / %a2, -(%sp)
 	
 	cmp.w	%d0, %d2

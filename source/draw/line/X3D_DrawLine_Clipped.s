@@ -13,7 +13,7 @@
 |	You should have received a copy of the GNU Lesser General Public License
 |	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
 
-| void X3D_DrawLine2_Clipped(void *Plane asm("%a0"), short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), unsigned char Color);
+| void X3D_DrawLine_Clipped(void *Plane asm("%a0"), short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), unsigned char Color);
 
 .text
 .even
@@ -21,8 +21,8 @@
 .set X3D_SCREEN_WIDTH,	159
 .set X3D_SCREEN_HEIGHT,	99
 
-.global X3D_DrawLine2_Clipped
-X3D_DrawLine2_Clipped:
+.global X3D_DrawLine_Clipped
+X3D_DrawLine_Clipped:
 	movem.l	%d3 - %d7 / %a2, -(%sp)
 	
 	bsr	GetClippingCode		| Just barely missed the opportunity to use a short branch here... sigh.

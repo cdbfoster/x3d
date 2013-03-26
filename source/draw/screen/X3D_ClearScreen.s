@@ -13,9 +13,9 @@
 |	You should have received a copy of the GNU Lesser General Public License
 |	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
 
-|void X3D_ClearScreen(void *Plane asm("%a0"));
+| void X3D_ClearScreen(void *Plane asm("%a0"));
 
-|Clears 3000 bytes of plane
+| Clears 3000 bytes of plane
 
 .text
 .even

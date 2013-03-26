@@ -191,7 +191,7 @@ extern void X3D_FillGrayPolygon(unsigned char *Plane1, unsigned char *Plane2, un
 // Experimental
 extern void X3D_DrawLine2(void *Plane asm("%a0"), short x1 asm("%d0"), short y1 asm("%d1"), short x2 asm("%d2"), short y2 asm("%d3"), unsigned char Color);
 extern void X3D_DrawGrayLine2(void *Plane1 asm("%a0"), void *Plane2 asm("%a1"), short x1 asm("%d0"), short y1 asm("%d1"), short x2 asm("%d2"), short y2 asm("%d3"), unsigned char Color);
-
+extern X3D_RESULT X3D_ClipLine(short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), short *ClippedCoordinates asm("%a0"));
 
 // Screen
 extern void X3D_ClearScreen(void *Plane asm("%a0"));

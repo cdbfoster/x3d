@@ -50,20 +50,18 @@ Use Return Value=0
 Enable Error Return=0
 Save Screen=1
 [File Editing]
-Open File=C:\Users\Chris\TI Projects\X3D Engine\X3D Engine\source\draw\line\X3D_ClipLine.s
+Open File=C:\Users\Chris\TI Projects\X3D Engine\X3D Engine\source\system\X3D.h
 [Included Files]
 C File 1=source\system\X3D.c
 C File 2=source\math\Trig Tables.c
-C File 3=source\draw\Experimental.c
-C File 4=source\draw\triangle\Normal Drawing Routines.c
-C File 5=source\draw\line\Normal Line Drawers.c
+C File 3=source\draw\triangle\Normal Drawing Routines.c
 GNU Assembler File 1=source\draw\screen\X3D_CopyScreen.s
 GNU Assembler File 2=source\draw\screen\X3D_ClearScreen.s
 GNU Assembler File 3=source\draw\line\X3D_ClipLine.s
-GNU Assembler File 4=source\draw\line\X3D_DrawLine2.s
-GNU Assembler File 5=source\draw\line\X3D_DrawLine2_Clipped.s
-GNU Assembler File 6=source\draw\line\X3D_DrawGrayLine2.s
-GNU Assembler File 7=source\draw\line\X3D_DrawGrayLine2_Clipped.s
+GNU Assembler File 4=source\draw\line\X3D_DrawLine.s
+GNU Assembler File 5=source\draw\line\X3D_DrawLine_Clipped.s
+GNU Assembler File 6=source\draw\line\X3D_DrawGrayLine.s
+GNU Assembler File 7=source\draw\line\X3D_DrawGrayLine_Clipped.s
 GNU Assembler File 8=source\draw\line\X3D_DrawHLineWHITE.s
 GNU Assembler File 9=source\draw\line\X3D_DrawHLineBLACK.s
 GNU Assembler File 10=source\draw\line\X3D_DrawGrayHLineWHITE.s

@@ -37,6 +37,7 @@ NoExchange:
 	move.b	%d4, (%a2)
 	
 	lea	(ColorData, %pc), %a1
+	lsr.w	#1, %d4
 	lsl.w	#2, %d4
 	adda.w	%d4, %a1
 	
@@ -199,9 +200,6 @@ ColorData:
 	|X3D_COLORS_WHITE
 	.byte	0xCD, 0x65	|	and.b	%d6, <ea>	,	bcs.x	<ea>
 	.word	0x7C7F		|	moveq	#127, %d6
-	
-	.byte	0x00, 0x00, 0x00, 0x00	| Padding
-	.byte	0x00, 0x00, 0x00, 0x00	|
 	
 	|X3D_COLORS_BLACK
 	.byte	0x8D, 0x64	|	or.b	%d6, <ea>	,	bcc.x	<ea>

@@ -18,6 +18,8 @@
 .text
 .even
 
+.include "../../system/ScreenConstants.s"
+
 .global X3D_DrawGrayHLineWHITE
 X3D_DrawGrayHLineWHITE:
 	move.l	%d3, -(%sp)
@@ -28,7 +30,7 @@ X3D_DrawGrayHLineWHITE:
 NoExchange:
 	tst.w	%d1		| Make sure the line is on-screen
 	blt.s	Exit		|
-	cmpi.w	#160, %d0	|
+	cmpi.w	#X3D_SCREEN_WIDTH, %d0	|
 	bge.s	Exit		|
 
 	tst.w	%d0		| Clip x1 if necessary
@@ -36,9 +38,9 @@ NoExchange:
 	moveq	#0, %d0		|
 
 X1Valid:
-	cmpi.w	#160, %d1	| Clip x2 if necessary
+	cmpi.w	#X3D_SCREEN_WIDTH, %d1	| Clip x2 if necessary
 	blt.s	X2Valid		|
-	move.w	#159, %d1	|
+	move.w	#X3D_SCREEN_MAX_X, %d1	|
 
 X2Valid:
 	move.w	%d0, %d3

@@ -17,7 +17,11 @@
 
 #define _GENERIC_ARCHIVE
 
-#include "../../X3D.h"
+#include "../../system/X3D_System.h"
+#include "../../system/X3D_Utility.h"
+#include "../../system/ScreenConstants.h"
+#include "../../math/X3D_Math.h"
+#include "../X3D_Draw.h"
 
 void X3D_FillConvexPolygon(unsigned char *Plane, unsigned char PointCount, X3D_Vec2 *Points, unsigned char Color)
 {
@@ -44,7 +48,7 @@ void X3D_FillConvexPolygon(unsigned char *Plane, unsigned char PointCount, X3D_V
 	}
 
 	// Trivially reject if possible
-	if (YMax < 0 || YMin > X3D_SCREEN_HEIGHT)
+	if (YMax < 0 || YMin > X3D_SCREEN_MAX_Y)
 		return;
 
 	X3D_Vec2 Reordered[PointCount + 1];
@@ -90,12 +94,12 @@ void X3D_FillConvexPolygon(unsigned char *Plane, unsigned char PointCount, X3D_V
 				YEnd = Reordered[++a].y;
 
 			for (;YPos < YEnd; YPos++, x1 += Slope1, x2 += Slope2, Address += X3D_SCREEN_BYTESPERLINE)
-				if (YPos >= 0 && YPos <= X3D_SCREEN_HEIGHT)
+				if (YPos >= 0 && YPos <= X3D_SCREEN_MAX_Y)
 						DrawHLine((short *)Address, x1 >> 7, x2 >> 7);
 		}
 	} while(a < b);
 
 	// Draw the last line
-	if (YPos <= X3D_SCREEN_HEIGHT)
+	if (YPos <= X3D_SCREEN_MAX_Y)
 		DrawHLine((short *)Address, x1 >> 7, x2 >> 7);
 }

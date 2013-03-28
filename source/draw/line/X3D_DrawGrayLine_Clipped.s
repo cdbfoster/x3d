@@ -18,8 +18,7 @@
 .text
 .even
 
-.set X3D_SCREEN_WIDTH,	159
-.set X3D_SCREEN_HEIGHT,	99
+.include "../../system/ScreenConstants.s"
 
 .global X3D_DrawGrayLine_Clipped
 X3D_DrawGrayLine_Clipped:
@@ -49,12 +48,12 @@ ClipBottom:
 	move.w	%d2, %d6
 	sub.w	%d0, %d6
 	move.w	%d1, %d7
-	subi.w	#X3D_SCREEN_HEIGHT, %d7
+	subi.w	#X3D_SCREEN_MAX_Y, %d7
 	muls.w	%d7, %d6
 	sub.w	%d3, %d1
 	divs.w	%d1, %d6
 	add.w	%d6, %d0
-	move.w	#X3D_SCREEN_HEIGHT, %d1
+	move.w	#X3D_SCREEN_MAX_Y, %d1
 	bsr.s	GetClippingCode
 	bra.s	CheckClippingCodes
 
@@ -89,12 +88,12 @@ ClipRight:
 	move.w	%d3, %d6
 	sub.w	%d1, %d6		| dy
 	move.w	%d0, %d7
-	subi.w	#X3D_SCREEN_WIDTH, %d7	| x1 - ScreenWidth
+	subi.w	#X3D_SCREEN_MAX_X, %d7	| x1 - ScreenWidth
 	muls.w	%d7, %d6		| (x1 - ScreenWidth) * dy
 	sub.w	%d2, %d0		| dx
 	divs.w	%d0, %d6		| (x1 - ScreenWidth) * (dy / dx)
 	add.w	%d6, %d1		| y1 += (x1 - ScreenWidth) * (dy / dx)
-	move.w	#X3D_SCREEN_WIDTH, %d0	| x1 = ScreenWidth
+	move.w	#X3D_SCREEN_MAX_X, %d0	| x1 = ScreenWidth
 	bsr.s	GetClippingCode
 	bra.s	CheckClippingCodes
 
@@ -110,14 +109,14 @@ GetClippingCode:
 	smi.b	%d4
 	move.b	%d4, -(%sp)			| Swap bytes of the first word of d4 by taking advantage of the
 	move.w	(%sp)+, %d4			| fact that the stack is word-aligned.
-	cmpi.w	#X3D_SCREEN_WIDTH + 1, %d0	| Test Right Clip
+	cmpi.w	#X3D_SCREEN_WIDTH, %d0	| Test Right Clip
 	sge.b	%d4
 	swap.w	%d4
 	tst.w	%d1				| Test Top Clip
 	smi.b	%d4
 	move.b	%d4, -(%sp)
 	move.w	(%sp)+, %d4
-	cmpi.w	#X3D_SCREEN_HEIGHT + 1, %d1	| Test Bottom Clip
+	cmpi.w	#X3D_SCREEN_HEIGHT, %d1	| Test Bottom Clip
 	sge.b	%d4
 	rts
 

@@ -19,12 +19,14 @@
 #define X3D_SYSTEM_ENGINEPARAMETERS
 
 #include "X3D_System.h"
+#include "displaymode/DisplayModes.h"
 
 typedef struct
 {
 	X3D_Parameters General;
 	unsigned char EngineState;
 	unsigned char EngineShift;
+	DisplayMode CurrentDisplayMode;
 } EngineParametersContainer;
 
 extern EngineParametersContainer EngineParameters;

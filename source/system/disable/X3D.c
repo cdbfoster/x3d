@@ -1,6 +1,12 @@
 #define _GENERIC_ARCHIVE
 
+#include <tigcclib.h>
 #include "X3D.h"
+#include "camera/Camera.h"
+#include "math/Math.h"
+
+#define X3D_Plane GeometricPlane
+#define X3D_Matrix Matrix
 
 // Internal Variables
 X3D_Parameters EngineParameters;
@@ -21,12 +27,13 @@ void X3D_SetEngineParameters(X3D_Parameters *Parameters)
 
 void X3D_GetEngineParameters(X3D_Parameters *Parameters)
 {
-	Parameters = Parameters;
+	Camera.a = 4;
+	//Parameters = Parameters;
 }
 
 X3D_RESULT X3D_UpdateCamera(X3D_Camera *Camera)
 {
-	if (!Camera)
+	/*if (!Camera)
 		return X3D_FAILURE;
 
 	// Calculate View Matrices
@@ -131,14 +138,14 @@ X3D_RESULT X3D_UpdateCamera(X3D_Camera *Camera)
 																				(long)(ViewFrustum[Plane].Normal.y) * Camera->Position.y +
 																				(long)(ViewFrustum[Plane].Normal.z) * Camera->Position.z;
 	}
-
+*/
 	return X3D_SUCCESS;
 }
 
 X3D_RESULT X3D_Render(X3D_Camera *Camera, unsigned short VertexCount, X3D_VertexStream *VertexStream, unsigned short FaceCount, X3D_FaceStream *FaceStream)
 {
 	//printf("X3D_Render\n");
-	if (!Camera || !VertexStream || !FaceStream)
+	/*if (!Camera || !VertexStream || !FaceStream)
 		return X3D_FAILURE;
 
 	X3D_Vec3 *Vertices = (X3D_Vec3 *)VertexStream;
@@ -237,7 +244,7 @@ X3D_RESULT X3D_Render(X3D_Camera *Camera, unsigned short VertexCount, X3D_Vertex
 					X3D_Vec3 *v = (ClippedFaces[Face].Vertices[x] >= 0 ? &Vertices[ClippedFaces[Face].Vertices[x]] : &OverflowVertexBuffer[~ClippedFaces[Face].Vertices[x]]);
 					printf("%d %d %d\n", v->x, v->y, v->z);
 				}
-				ngetchx();*/
+				ngetchx();
 
 				OverflowVertexCount = ClipPolygonOnPlane(&ClippedFaces[Face], Vertices, &Frustum[Plane], OverflowVertexCount, OverflowVertexBuffer);
 
@@ -253,7 +260,7 @@ X3D_RESULT X3D_Render(X3D_Camera *Camera, unsigned short VertexCount, X3D_Vertex
 					X3D_Vec3 *v = (ClippedFaces[Face].Vertices[x] >= 0 ? &Vertices[ClippedFaces[Face].Vertices[x]] : &OverflowVertexBuffer[~ClippedFaces[Face].Vertices[x]]);
 					printf("%d %d %d\n", v->x, v->y, v->z);
 				}
-				ngetchx();*/
+				ngetchx();
 			}
 		}
 		else // Face is entirely outside the frustum
@@ -403,10 +410,10 @@ X3D_RESULT X3D_Render(X3D_Camera *Camera, unsigned short VertexCount, X3D_Vertex
 				Copy X and Y into Polygon
 			FillPolygon
 		}
-	*/
+	
 	free(OverflowVertexBuffer);
 
-	//printf("Leaving X3D_Render\n");
+	//printf("Leaving X3D_Render\n");*/
 	return X3D_SUCCESS;
 }
 

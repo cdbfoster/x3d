@@ -15,19 +15,22 @@
 *	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define _GENERIC_ARCHIVE
+#ifndef X3D_SYSTEM_DISPLAY_MODES
+#define X3D_SYSTEM_DISPLAY_MODES
 
-#include "EngineParameters.h"
-#include "X3D_System.h"
+#include "../X3D_System.h"
+#include "../X3D_Math.h"
 
-EngineParametersContainer EngineParameters;
-
-void X3D_SetEngineParameters(X3D_Parameters *Parameters)
+typedef struct
 {
-	// Stuff
-}
+	X3D_RESULT (*Initialize)();
+	X3D_RESULT (*PrepareDraw)(unsigned short VertexCount, X3D_Vec3 *Vertices, unsigned short FaceCount, X3D_Face *Faces);
+	X3D_RESULT (*Draw)(unsigned short VertexCount, X3D_Vec3 *Vertices, unsigned short FaceCount, X3D_Face *Faces);
+	X3D_RESULT (*Cleanup)();
+	X3D_RESULT (*Terminate)();
+	void *Data;
+} DisplayMode;
 
-void X3D_GetEngineParameters(X3D_Parameters *Parameters)
-{
-	// Stuff
-}
+X3D_RESULT InitDisplayMode(EngineParametersContainer *EngineParameters, X3D_DISPLAY_MODE DisplayMode);
+
+#endif

@@ -15,38 +15,12 @@
 *	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef X3D_MATH
-#define X3D_MATH
+#ifndef X3D_RENDER_INTERNAL_API
+#define X3D_RENDER_INTERNAL_API
 
-typedef struct {
-	short x, y;
-} X3D_Vec2;
+#include "../external/X3D_System.h"
+#include "../external/X3D_Utility.h"
 
-typedef struct {
-	short x, y, z;
-} X3D_Vec3;
-
-typedef struct {
-	long _11, _12, _13;
-	long _21, _22, _23;
-	long _31, _32, _33;
-	long _11_12, _21_22, _31_32;
-} Matrix;
-
-typedef struct {
-	X3D_Vec3 Normal;
-	long PlaneConstant;
-} GeometricPlane;
-
-#define X3D_Abs(x)					(((x) < 0) ? -(x) : (x))
-#define X3D_Sign(x)					(((x) < 0) ? -1 : 1)
-#define X3D_WrapAngle(x)			((x) & 0x01FF)
-
-extern const short X3D_SinTable[512];
-extern const short X3D_TanTable[512];
-
-#define X3D_Sin(x)	(X3D_SinTable[X3D_WrapAngle(x)])
-#define X3D_Cos(x)	(X3D_SinTable[X3D_WrapAngle((x) + 128)])
-#define X3D_Tan(x)	(X3D_TanTable[X3D_WrapAngle(x)])
+X3D_RESULT InitializeRender(X3D_Parameters *InitialParameters);
 
 #endif

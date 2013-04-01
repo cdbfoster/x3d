@@ -18,7 +18,7 @@
 .text
 .even
 
-.include "../../system/ScreenConstants.s"
+.include "../../api/internal/ScreenConstants.s"
 
 .global X3D_DrawGrayHLineBLACK
 X3D_DrawGrayHLineBLACK:

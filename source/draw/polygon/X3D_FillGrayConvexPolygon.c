@@ -17,11 +17,10 @@
 
 #define _GENERIC_ARCHIVE
 
-#include "../../system/X3D_System.h"
-#include "../../system/ScreenConstants.h"
-#include "../../system/X3D_Utility.h"
-#include "../../math/X3D_Math.h"
-#include "../X3D_Draw.h"
+#include "../../api/external/X3D_System.h"
+#include "../../api/external/X3D_Utility.h"
+#include "../../api/external/X3D_Math.h"
+#include "../../api/external/X3D_Draw.h"
 
 void X3D_FillGrayConvexPolygon(unsigned char *Plane1, unsigned char *Plane2, unsigned char PointCount, X3D_Vec2 *Points, unsigned char Color)
 {

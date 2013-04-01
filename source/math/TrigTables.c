@@ -17,7 +17,7 @@
 
 #define _GENERIC_ARCHIVE
 
-#include "X3D_Math.h"
+#include "../api/external/X3D_Math.h"
 
 // Complete sine << 8 table using increments of about .703 degrees
 const short X3D_SinTable[512]={

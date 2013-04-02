@@ -21,6 +21,10 @@
 #include "X3D_Utility.h"
 #include "X3D_Math.h"
 
+#define X3D_SetPix(plane, x, y)		(*((unsigned char *)(plane) + X3D_ByteOffset(x, y)) |= (0x80 >> X3D_ByteMask(x)))
+#define X3D_ClrPix(plane, x, y)		(*((unsigned char *)(plane) + X3D_ByteOffset(x, y)) &= ~(0x80 >> X3D_ByteMask(x)))
+#define X3D_ScreenTest(x, y)		(x >= 0 && x < X3D_SCREEN_WIDTH && y >= 0 && y < X3D_SCREEN_HEIGHT)
+
 // Colors
 #define X3D_COLOR			unsigned char
 #define X3D_COLORS_WHITE	0

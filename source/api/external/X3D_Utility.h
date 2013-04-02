@@ -18,7 +18,9 @@
 #ifndef X3D_UTILITY
 #define X3D_UTILITY
 
-// If changing any of these, make sure to also change ScreenConstants.s and recompile the engine
+// If changing any of these, make sure to also change ScreenConstants.s and recompile the engine.
+// Changes may require recoding of the non-horizontal line drawers and the screen routines.
+#define X3D_SCREEN_BUFFERSIZE		3000
 #define X3D_SCREEN_WIDTH			160
 #define X3D_SCREEN_HEIGHT			100
 #define X3D_SCREEN_MAX_X			159
@@ -40,9 +42,6 @@
 #define X3D_WordOffset(x, y)		(((y << 4) - y) + (x >> 4))	// ((y * X3D_WORDSPERLINE) + (x / 16))  Gives the offset of the word containing (x, y)
 #define X3D_WordBitOffset(x)		(x & 0x0F)	//	Gives the bit offset of x within its containing word
 
-#define X3D_SetPix(plane, x, y)		(*((unsigned char *)(plane) + X3D_ByteOffset(x, y)) |= (0x80 >> X3D_ByteMask(x)))
-#define X3D_ClrPix(plane, x, y)		(*((unsigned char *)(plane) + X3D_ByteOffset(x, y)) &= ~(0x80 >> X3D_ByteMask(x)))
-#define X3D_ScreenTest(x, y)		(x >= 0 && x < X3D_SCREEN_WIDTH && y >= 0 && y < X3D_SCREEN_HEIGHT)
 #define X3D_Switch(x, y)			asm("exg %0, %1" : "=d" (x), "=d" (y) : "0" (x), "1" (y))
 #define X3D_Wrap(x, y)				(((x) >= (y)) ? ((x) - (y)) : (x))
 

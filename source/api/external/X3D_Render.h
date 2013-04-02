@@ -20,6 +20,7 @@
 
 #include "X3D_Utility.h"
 #include "X3D_Math.h"
+#include "X3D_Draw.h"
 
 typedef struct {
 	X3D_Transform Transform;
@@ -27,8 +28,25 @@ typedef struct {
 	X3D_ANGLE VerticalFOV;
 } X3D_Camera;
 
-X3D_RESULT X3D_UpdateCamera(X3D_Camera *Camera);
+#define X3D_Vertex	X3D_Vec3
 
-X3D_RESULT X3D_Render(unsigned short VertexCount, X3D_Vec3 *Vertices, unsigned short FaceCount, X3D_Face *Faces);
+typedef struct {
+	unsigned short VertexCount;
+	X3D_Vertex *Vertices;
+} X3D_Vertices;
+
+typedef struct {
+	unsigned short Vertices[3];
+	X3D_COLOR Color;
+} X3D_Polygon;
+
+typedef struct {
+	unsigned short PolygonCount;
+	X3D_Polygon *Polygons;
+} X3D_Polygons;
+
+X3D_RESULT X3D_UpdateRenderCamera(X3D_Camera *Camera);
+
+X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Polygons *Polygons);
 
 #endif

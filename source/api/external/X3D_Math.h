@@ -67,7 +67,6 @@ inline void X3D_MultiplyMatrixVec3(X3D_Matrix *Matrix, X3D_Vec3 *Vector, X3D_Vec
 inline void X3D_MultiplyMatrixMatrix(X3D_Matrix *MatrixA, X3D_Matrix *MatrixB, X3D_Matrix *Result);
 inline void X3D_RotationMatrixXYZ(X3D_Matrix *Matrix, X3D_ANGLE AngleX, X3D_ANGLE AngleY, X3D_ANGLE AngleZ);
 inline void X3D_TransposeMatrix(X3D_Matrix *Matrix, X3D_Matrix *Result);
-// Add some other matrix operations
 
 // Transform Operations
 inline void X3D_CreateTransform(X3D_Transform *Transform,
@@ -76,6 +75,6 @@ inline void X3D_CreateTransform(X3D_Transform *Transform,
 								float ScaleX, float ScaleY, float ScaleZ);
 // Source and Destination may point to the same location
 inline void X3D_TransformVec3(X3D_Vec3 *Vector, X3D_Vec3 *Result, X3D_Transform *Transform);
-inline void X3D_TransformVertices(unsigned short VertexCount, X3D_Vec3 *Source, X3D_Vec3 *Destination, X3D_Transform *Transform);
+inline void X3D_TransformVec3Array(unsigned short Count, X3D_Vec3 *Source, X3D_Vec3 *Destination, X3D_Transform *Transform);
 
 #endif

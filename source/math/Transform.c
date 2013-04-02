@@ -48,9 +48,9 @@ void X3D_TransformVector(X3D_Vec3 *Vector, X3D_Vec3 *Result, X3D_Transform *Tran
 	X3D_AddVec3Vec3(&Temp, &Transform->Translation, Result);
 }
 
-void X3D_TransformVertices(unsigned short VertexCount, X3D_Vec3 *Source, X3D_Vec3 *Destination, X3D_Transform *Transform)
+void X3D_TransformVec3Array(unsigned short Count, X3D_Vec3 *Source, X3D_Vec3 *Destination, X3D_Transform *Transform)
 {
 	unsigned short a;
-	for (a = 0; a < VertexCount; a++)
+	for (a = 0; a < Count; a++)
 		X3D_TransformVec3(&Source[a], &Destination[a], Transform);
 }

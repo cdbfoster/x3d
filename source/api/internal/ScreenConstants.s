@@ -13,6 +13,7 @@
 |	You should have received a copy of the GNU Lesser General Public License
 |	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
 
+.set X3D_SCREEN_BUFFERSIZE		3000
 .set X3D_SCREEN_WIDTH,			160
 .set X3D_SCREEN_HEIGHT,			100
 .set X3D_SCREEN_MAX_X,			159

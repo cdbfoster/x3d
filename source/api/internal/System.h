@@ -21,14 +21,15 @@
 #include "../external/X3D_System.h"
 
 // EngineState
+#define ENGINESTATE_ALL						0x07;
 #define ENGINESTATE_ENGINE_INITIALIZED		0x01;
-#define ENGINESTATE_RENDER_INITIALIZED		0x02;
-#define ENGINESTATE_COLORMODE_INITILIAZED	0x04;
+#define ENGINESTATE_COLORMODE_INITILIAZED	0x02;
+#define ENGINESTATE_RENDER_INITIALIZED		0x04;
 
 typedef struct
 {
 	X3D_Parameters General;
-	unsigned char EngineState;
+	unsigned char State;
 } EngineStateContainer;
 
 extern EngineStateContainer EngineState;

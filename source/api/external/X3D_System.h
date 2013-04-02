@@ -58,6 +58,7 @@ typedef struct {
 } X3D_Parameters;
 
 X3D_RESULT X3D_InitializeEngine(X3D_Parameters *InitialParameters);
+X3D_RESULT X3D_TerminateEngine();
 
 X3D_RESULT X3D_SetEngineParameters(X3D_Parameters *Parameters);
 X3D_RESULT X3D_GetEngineParameters(X3D_Parameters *Parameters);

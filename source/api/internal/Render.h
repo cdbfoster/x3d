@@ -22,5 +22,6 @@
 #include "../external/X3D_Utility.h"
 
 X3D_RESULT InitializeRender(X3D_Parameters *InitialParameters);
+X3D_RESULT TerminateRender();
 
 #endif

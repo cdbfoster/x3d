@@ -101,9 +101,15 @@ X3D_RESULT X3D_TerminateEngine()
 			GrayOff();
 
 		if (PlaneOwnership & PLANE1_OWNED)
+		{
 			free(EngineState.General.Plane1);
+			PlaneOwnership &= ~PLANE1_OWNED;
+		}
 		if (PlaneOwnership & PLANE2_OWNED)
+		{
 			free(EngineState.General.Plane2);
+			PlaneOwnership &= ~PLANE2_OWNED;
+		}
 
 		EngineState.State &= ~ENGINESTATE_COLORMODE_INITIALIZED;
 	}
@@ -118,10 +124,105 @@ X3D_RESULT X3D_TerminateEngine()
 
 X3D_RESULT X3D_SetEngineParameters(X3D_Parameters *Parameters)
 {
+	if (!(EngineState.State & ENGINESTATE_ENGINE_INITIALIZED))
+		return X3D_FAILURE;
+
+	// Check color mode and planes
+	if (EngineState.General.ColorMode != Parameters->ColorMode)
+	{
+		EngineState.State &= ~ENGINESTATE_COLORMODE_INITIALIZED;
+
+		if (Parameters->ColorMode == X3D_COLOR_MONOCHROME)
+		{
+			GrayOff();
+			
+			if (PlaneOwnership & PLANE2_OWNED)
+			{
+				free(EngineState.General.Plane2);
+				PlaneOwnership &= ~PLANE2_OWNED;
+			}
+			EngineState.General.Plane2 = NULL;
+		}
+		else
+			GrayOn();
+
+		EngineState.General.ColorMode = Parameters->ColorMode;
+	}
+
+	if (Parameters->Plane1 != NULL)
+	{
+		if (PlaneOwnership & PLANE1_OWNED)
+		{
+			free(EngineState.General.Plane1);
+			PlaneOwnership &= ~PLANE1_OWNED;
+		}
+		EngineState.General.Plane1 = Parameters->Plane1;
+	}
+	else if (EngineState.General.Plane1 == NULL)
+	{
+		void *Plane = NULL;
+		if (!(Plane = malloc(X3D_SCREEN_BUFFERSIZE)))
+			return X3D_MEMORYERROR;
+		X3D_ClearScreen(Plane);
+		
+		EngineState.General.Plane1 = Plane;
+		PlaneOwnerShip |= PLANE1_OWNED;
+	}
+
+	if (EngineState.General.ColorMode == X3D_COLOR_GRAYSCALE)
+	{
+		if (Parameters->Plane2 != NULL)
+		{
+			if (PlaneOwnership & PLANE2_OWNED)
+			{
+				free(EngineState.General.Plane2);
+				PlaneOwnership &= ~PLANE2_OWNED;
+			}
+			EngineState.General.Plane2 = Parameters->Plane2;
+		}
+		else if (EngineState.General.Plane2 == NULL)
+		{
+			void *Plane = NULL;
+			if (!(Plane = malloc(X3D_SCREEN_BUFFERSIZE)))
+				return X3D_MEMORYERROR;
+			X3D_ClearScreen(Plane);
+			
+			EngineState.General.Plane2 = Plane;
+			PlaneOwnerShip |= PLANE2_OWNED;
+		}
+	}
+
+	EngineState.State |= ENGINESTATE_COLORMODE_INITIALIZED;
+
+	// Check render parameters
+	if (EngineState.General.DisplayMode != Parameters->DisplayMode ||
+		EngineState.General.ProjectionMode != Parameters->ProjectionMode ||
+		EngineState.General.BackfaceCullMode != Parameters->BackfaceCullMode ||
+		EngineState.General.OutlineMode != Parameters->OutlineMode)
+	{
+		EngineState.State &= ~ENGINESTATE_RENDER_INITIALIZED;
+
+		EngineState.General.DisplayMode = Parameters->DisplayMode;
+		EngineState.General.ProjectionMode = Parameters->ProjectionMode;
+		EngineState.General.BackfaceCullMode = Parameters->BackfaceCullMode;
+		EngineState.General.OutlineMode = Parameters->OutlineMode;
+
+		X3D_RESULT Result = InitializeRender(&EngineState.General);
+		if (X3D_FAILED(Result))
+			return Result;
+		
+		EngineState.State |= ENGINESTATE_RENDER_INITIALIZED;
+	}
+
 	return X3D_SUCCESS;
 }
 
 X3D_RESULT X3D_GetEngineParameters(X3D_Parameters *Parameters)
 {
+	if (!(EngineState.State & ENGINESTATE_ENGINE_INITIALIZED))
+		return X3D_FAILURE;
+
+	memcpy(Parameters, EngineState.General, sizeof(X3D_Parameters));
+
 	return X3D_SUCCESS;
 }

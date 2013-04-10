@@ -199,8 +199,7 @@ X3D_RESULT X3D_SetEngineParameters(X3D_Parameters *Parameters)
 	// Check render parameters
 	if (EngineState.General.DisplayMode != Parameters->DisplayMode ||
 		EngineState.General.ProjectionMode != Parameters->ProjectionMode ||
-		EngineState.General.BackfaceCullMode != Parameters->BackfaceCullMode ||
-		EngineState.General.OutlineMode != Parameters->OutlineMode)
+		EngineState.General.BackfaceCullMode != Parameters->BackfaceCullMode)
 	{
 		EngineState.State &= ~ENGINESTATE_RENDER_INITIALIZED;
 
@@ -211,10 +210,11 @@ X3D_RESULT X3D_SetEngineParameters(X3D_Parameters *Parameters)
 		EngineState.General.DisplayMode = Parameters->DisplayMode;
 		EngineState.General.ProjectionMode = Parameters->ProjectionMode;
 		EngineState.General.BackfaceCullMode = Parameters->BackfaceCullMode;
-		EngineState.General.OutlineMode = Parameters->OutlineMode;
 		
 		EngineState.State |= ENGINESTATE_RENDER_INITIALIZED;
 	}
+
+	EngineState.General.OutlineMode = Parameters->OutlineMode;
 
 	return X3D_SUCCESS;
 }

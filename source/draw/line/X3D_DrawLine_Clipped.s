@@ -12,6 +12,8 @@
 |
 |	You should have received a copy of the GNU Lesser General Public License
 |	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
+|
+|	Copyright 2013 Chris Foster
 
 | void X3D_DrawLine_Clipped(void *Plane asm("%a0"), short x1 asm("%d2"), short y1 asm("%d3"), short x2 asm("%d0"), short y2 asm("%d1"), unsigned char Color);
 

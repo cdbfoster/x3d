@@ -12,6 +12,8 @@
 |
 |	You should have received a copy of the GNU Lesser General Public License
 |	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
+|
+|	Copyright 2013 Chris Foster
 
 | void X3D_DrawGrayHLineDGRAY(short *Address1 asm("%a0"), short *Address2 asm("%a1"), short x1 asm("%d0"), short x2 asm("%d1"));
 

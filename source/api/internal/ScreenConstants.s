@@ -12,6 +12,8 @@
 |
 |	You should have received a copy of the GNU Lesser General Public License
 |	along with X3D Engine.  If not, see <http://www.gnu.org/licenses/>.
+|
+|	Copyright 2013 Chris Foster
 
 .set X3D_SCREEN_BUFFERSIZE		3000
 .set X3D_SCREEN_WIDTH,			160

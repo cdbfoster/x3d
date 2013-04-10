@@ -20,6 +20,11 @@
 
 #include "X3D_Utility.h"
 
+// Color Modes
+#define X3D_COLOR_MODE					unsigned char
+#define X3D_COLOR_MONOCHROME			0
+#define X3D_COLOR_GRAYSCALE				1
+
 // Display Modes
 #define X3D_DISPLAY_MODE				unsigned char
 #define X3D_DISPLAY_WIREFRAME			0
@@ -30,11 +35,6 @@
 #define X3D_PROJECTION_MODE				unsigned char
 #define X3D_PROJECTION_PERSPECTIVE		0
 #define X3D_PROJECTION_ORTHOGRAPHIC		1
-
-// Color Modes
-#define X3D_COLOR_MODE					unsigned char
-#define X3D_COLOR_MONOCHROME			0
-#define X3D_COLOR_GRAYSCALE				1
 
 // Backface Cull Modes
 #define X3D_BACKFACE_CULL_MODE			unsigned char
@@ -48,9 +48,9 @@
 #define X3D_OUTLINE_OPPOSITE			2
 
 typedef struct {
+	X3D_COLOR_MODE			ColorMode;
 	X3D_DISPLAY_MODE		DisplayMode;
 	X3D_PROJECTION_MODE		ProjectionMode;
-	X3D_COLOR_MODE			ColorMode;
 	X3D_BACKFACE_CULL_MODE	BackfaceCullMode;
 	X3D_OUTLINE_MODE		OutlineMode;
 

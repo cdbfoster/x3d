@@ -21,10 +21,45 @@
 
 #include <tigcclib.h>
 #include "../api/external/X3D_Utility.h"
+#include "../api/external/X3D_Render.h"
+#include "../api/internal/System.h"
 #include "../api/internal/Render.h"
 
-X3D_RESULT InitializeRender(X3D_Parameters *InitialParameters)
-{
+#include "RenderFunctions.h"
 
+#include "DisplayMode.h" // Create this file.  It should contain methods to set the display mode as well as contain includes for each display mode header.
+#include "ProjectionMode.h"
+#include "BackfaceCullMode.h"
+
+X3D_RESULT InitializeRender(X3D_Parameters *Parameters)
+{
+	X3D_RESULT Result;
+	
+	if (EngineState.General.DisplayMode != Parameters->DisplayMode)
+	{
+		Result = InitializeDisplayMode(Parameters);
+		if (X3D_FAILED(Result))
+			return Result;
+	}
+
+	/*if (EngineState.General.ProjectionMode != Parameters->ProjectionMode)
+	{
+		Result = InitializeProjectionMode(Parameters);
+		if (X3D_FAILED(Result)
+			return Result;
+	}*/
+
+	/*if (EngineState.General.BackfaceCullMode != Parameters->BackfaceCullMode)
+	{
+		Result = InitializeProjectionMode(Parameters);
+		if (X3D_FAILED(Result)
+			return Result;
+	}*/
+ 
 	return X3D_SUCCESS;
+}
+
+X3D_RESULT TerminateRender()
+{
+	return Render.DisplayMode_Terminate();
 }

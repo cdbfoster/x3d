@@ -39,7 +39,7 @@
 #define X3D_PROJECTION_ORTHOGRAPHIC		1
 
 // Backface Cull Modes
-#define X3D_BACKFACE_CULL_MODE			unsigned char
+#define X3D_BACKFACECULL_MODE			unsigned char
 #define X3D_BACKFACECULL_OFF			0
 #define X3D_BACKFACECULL_ON				1
 
@@ -53,7 +53,7 @@ typedef struct {
 	X3D_COLOR_MODE			ColorMode;
 	X3D_DISPLAY_MODE		DisplayMode;
 	X3D_PROJECTION_MODE		ProjectionMode;
-	X3D_BACKFACE_CULL_MODE	BackfaceCullMode;
+	X3D_BACKFACECULL_MODE	BackfaceCullMode;
 	X3D_OUTLINE_MODE		OutlineMode;
 
 	void *Plane1, *Plane2; // Light and Dark planes, respectively

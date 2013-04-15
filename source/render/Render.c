@@ -25,9 +25,10 @@
 #include "../api/internal/System.h"
 #include "../api/internal/Render.h"
 
+#include "RenderCamera.h"
 #include "RenderFunctions.h"
 
-#include "DisplayMode.h" // Create this file.  It should contain methods to set the display mode as well as contain includes for each display mode header.
+#include "DisplayMode.h"
 #include "ProjectionMode.h"
 #include "BackfaceCullMode.h"
 
@@ -62,4 +63,10 @@ X3D_RESULT InitializeRender(X3D_Parameters *Parameters)
 X3D_RESULT TerminateRender()
 {
 	return Render.DisplayMode_Terminate();
+}
+
+X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Polygons *Polygons)
+{
+
+	return X3D_SUCCESS;
 }

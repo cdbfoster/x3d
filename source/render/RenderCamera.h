@@ -17,39 +17,29 @@
 *	Copyright 2013 Chris Foster
 */
 
-#ifndef X3D_RENDER
-#define X3D_RENDER
+#ifndef X3D_RENDER_CAMERA
+#define X3D_RENDER_CAMERA
 
-#include "X3D_Utility.h"
-#include "X3D_Math.h"
-#include "X3D_Draw.h"
+#include "../api/external/X3D_Utility.h"
+#include "../api/external/X3D_Math.h"
+#include "../api/external/X3D_Render.h"
 
-typedef struct {
-	X3D_Transform Transform; // Camera's orientation in the world.  Technically the inverse view transform (View to World).
-	X3D_ANGLE HorizontalFOV;
-	X3D_ANGLE VerticalFOV;
-	unsigned short NearClip, FarClip;
-} X3D_Camera;
-
-#define X3D_Vertex	X3D_Vec3
-
-typedef struct {
-	unsigned short VertexCount;
-	X3D_Vertex *Vertices;
-} X3D_Vertices;
+// Frustum Planes
+#define X3D_FRUSTUM_NEAR				0
+#define X3D_FRUSTUM_FAR					1
+#define X3D_FRUSTUM_LEFT				2
+#define X3D_FRUSTUM_RIGHT				3
+#define X3D_FRUSTUM_TOP					4
+#define X3D_FRUSTUM_BOTTOM				5
 
 typedef struct {
-	unsigned short Vertices[3];
-	X3D_COLOR Color;
-} X3D_Polygon;
+	X3D_Camera User;
+	X3D_Matrix ViewMatrix; // User camera actually contains the inverse view matrix (View to World).
+	X3D_Plane ViewFrustum[6];
+} RenderCameraType;
 
-typedef struct {
-	unsigned short PolygonCount;
-	X3D_Polygon *Polygons;
-} X3D_Polygons;
+extern RenderCameraType RenderCamera;
 
-X3D_RESULT X3D_UpdateRenderCamera(X3D_Camera *Camera);
-
-X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Polygons *Polygons);
+X3D_RESULT FrustumCullPolygons(X3D_Vertices *Vertices, X3D_Polygons *Polygons, X3D_Vertices *ResultVertices, X3D_Polygons *ResultPolygons);
 
 #endif

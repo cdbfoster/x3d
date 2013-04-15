@@ -1,18 +1,27 @@
 @echo off
-tigcc Render.c ^
+tigcc BackfaceCullMode.c ^
+      DisplayMode.c ^
+      ProjectionMode.c ^
+      Render.c ^
+      RenderCamera.c ^
 	  RenderFunctions.c ^
-	  DisplayMode.c ^
       -c -Os -Wall -W -Wwrite-strings -ffunction-sections -fdata-sections -DMIN_AMS=100
 cd displaymode
 tigcc WireframeDisplayMode.c ^
 	  -c -Os -Wall -W -Wwrite-strings -ffunction-sections -fdata-sections -DMIN_AMS=100
 cd ..
-tigcc Render.o ^
+tigcc BackfaceCullMode.o ^
+      DisplayMode.o ^
+      ProjectionMode.o ^
+      Render.o ^
+      RenderCamera.o ^
 	  RenderFunctions.o ^
-	  DisplayMode.o ^
 	  displaymode\WireframeDisplayMode.o ^
       -ar -o X3D_Render -Os -Wall -W -Wwrite-strings -ffunction-sections -fdata-sections -DMIN_AMS=100
-echo Y | del Render.o ^
+echo Y | del BackfaceCullMode.o ^
+      DisplayMode.o ^
+      ProjectionMode.o ^
+      Render.o ^
+      RenderCamera.o ^
 	  RenderFunctions.o ^
-	  DisplayMode.o ^
 	  displaymode\WireframeDisplayMode.o

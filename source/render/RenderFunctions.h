@@ -22,6 +22,7 @@
 
 #include "../api/external/X3D_Utility.h"
 #include "../api/external/X3D_Render.h"
+#include "../api/internal/Render.h"
 
 typedef struct {
 	X3D_RESULT (*DisplayMode_Initialize)();

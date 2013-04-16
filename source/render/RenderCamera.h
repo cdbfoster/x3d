@@ -23,6 +23,7 @@
 #include "../api/external/X3D_Utility.h"
 #include "../api/external/X3D_Math.h"
 #include "../api/external/X3D_Render.h"
+#include "../api/internal/Render.h"
 
 // Frustum Planes
 #define X3D_FRUSTUM_NEAR				0
@@ -40,6 +41,8 @@ typedef struct {
 
 extern RenderCameraType RenderCamera;
 
-X3D_RESULT FrustumCullPolygons(X3D_Vertices *Vertices, X3D_Polygons *Polygons, X3D_Vertices *ResultVertices, X3D_Polygons *ResultPolygons);
+X3D_RESULT FrustumCullTriangles(X3D_Vertices *Vertices, X3D_Triangles *Triangles, X3D_Vertices *ResultVertices, X3D_Polygons *ResultPolygons);
+
+X3D_RESULT ViewTransformVertices(X3D_Vertices *Vertices, X3D_Vertices *ResultVertices);
 
 #endif

@@ -39,17 +39,17 @@ typedef struct {
 } X3D_Vertices;
 
 typedef struct {
-	unsigned short Vertices[3];
 	X3D_COLOR Color;
-} X3D_Polygon;
+	unsigned short Vertices[3];
+} X3D_Triangle;
 
 typedef struct {
-	unsigned short PolygonCount;
-	X3D_Polygon *Polygons;
-} X3D_Polygons;
+	unsigned short TriangleCount;
+	X3D_Triangle *Triangles;
+} X3D_Triangles;
 
 X3D_RESULT X3D_UpdateRenderCamera(X3D_Camera *Camera);
 
-X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Polygons *Polygons);
+X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Triangles *Triangles);
 
 #endif

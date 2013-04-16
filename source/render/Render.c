@@ -65,8 +65,53 @@ X3D_RESULT TerminateRender()
 	return Render.DisplayMode_Terminate();
 }
 
-X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Polygons *Polygons)
+X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Triangles *Triangles)
 {
+	if (!(EngineState.State & ENGINESTATE_RENDER_INITIALIZED))
+		return X3D_FAILURE;
+
+	if (Vertices == NULL || Triangles == NULL)
+		return X3D_FAILURE;
+
+	X3D_Vertices ClippedVertices;
+	X3D_Polygons ClippedPolygons;
+
+	X3D_RESULT Result = FrustumCullTriangles(Vertices, Triangles, &ClippedVertices, &ClippedPolygons);
+	if (X3D_FAILED(Result))
+		return Result;
+
+	Result = ViewTransformVertices(&ClippedVertices, &ClippedVertices);
+	if (X3D_FAILED(Result))
+		return Result;
+
+	//Result = Render.ProjectionMode_ProjectVertices(&ClippedVertices, &ClippedVertices);
+	//if (X3D_FAILED(Result))
+	//	return Result;
+
+	//X3D_Polygons BackfaceCulledPolygons
+	//Result = Render.BackfaceCullMode_CullPolygons(&ClippedVertices, &ClippedPolygons, &BackfaceCulledPolygons);
+	//if (X3D_FAILED(Result))
+	//	return Result;
+
+	X3D_Vertices DrawVertices;
+	X3D_Polygons DrawPolygons;
+	Result = Render.DisplayMode_PrepareDraw(&ClippedVertices, &ClippedPolygons/*&BackfaceCulledPolygons*/, &DrawVertices, &DrawPolygons);
+	if (X3D_FAILED(Result))
+		return Result;
+
+	Result = Render.DisplayMode_Draw(&DrawVertices, &DrawPolygons);
+	if (X3D_FAILED(Result))
+		return Result;
+
+	Result = Render.DisplayMode_Cleanup();
+	if (X3D_FAILED(Result))
+		return Result;
+
+	free(DrawPolygons.Polygons);
+	free(DrawVertices.Vertices);
+	//free(BackfaceCulledPolygons.Polygons);
+	free(ClippedPolygons.Polygons);
+	free(ClippedVertices.Vertices);
 
 	return X3D_SUCCESS;
 }

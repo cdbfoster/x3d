@@ -22,6 +22,17 @@
 
 #include "../external/X3D_System.h"
 #include "../external/X3D_Utility.h"
+#include "../external/X3D_Draw.h"
+
+typedef struct {
+	X3D_COLOR Color;
+	unsigned short Vertices[6];
+} X3D_Polygon;
+
+typedef struct {
+	unsigned short PolygonCount;
+	X3D_Polygon *Polygons;
+} X3D_Polygons;
 
 X3D_RESULT InitializeRender(X3D_Parameters *InitialParameters);
 X3D_RESULT TerminateRender();

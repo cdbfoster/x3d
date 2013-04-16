@@ -24,6 +24,7 @@
 #include "../../api/external/X3D_Utility.h"
 #include "../../api/external/X3D_System.h"
 #include "../../api/external/X3D_Render.h"
+#include "../../api/internal/Render.h"
 
 #include "WireframeDisplayMode.h"
 

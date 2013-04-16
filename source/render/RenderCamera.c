@@ -93,7 +93,24 @@ X3D_RESULT X3D_UpdateRenderCamera(X3D_Camera *Camera)
 	return X3D_SUCCESS;
 }
 
-X3D_RESULT FrustumCullPolygons(X3D_Vertices *Vertices, X3D_Polygons *Polygons, X3D_Vertices *ResultVertices, X3D_Polygons *ResultPolygons)
+X3D_RESULT FrustumCullPolygons(X3D_Vertices *Vertices, X3D_Triangles *Triangles, X3D_Vertices *ResultVertices, X3D_Polygons *ResultPolygons)
 {
+	ResultVertices->VertexCount = Vertices->VertexCount;
+	ResultVertices->Vertices = malloc(ResultVertices->VertexCount * sizeof(X3D_Vertex)); // Make sure to check for failure
+	memcpy(ResultVertices->Vertices, Vertices->Vertices, ResultVertices->VertexCount * sizeof(X3D_Vertex));
+
+	ResultPolygons->PolygonCount = Triangles->TriangleCount;
+	ResultPolygons->Polygons = malloc(ResultPolygons->PolygonCount * sizeof(X3D_Polygon)); // Here too
+
+	unsigned short a;
+	for (a = 0; a < ResultPolygons->PolygonCount; a++)
+		*(X3D_Triangle *)(&ResultPolygons->Polygons[a]) = Triangles->Triangles[a];
+
+	return X3D_SUCCESS;
+}
+
+X3D_RESULT ViewTransformVertices(X3D_Vertices *Vertices, X3D_Vertices *ResultVertices)
+{
+
 	return X3D_SUCCESS;
 }

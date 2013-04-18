@@ -35,7 +35,7 @@ void X3D_CreateTransform(X3D_Transform *Transform,
 	Transform->ScaleBitShift = 8;
 }
 
-void X3D_TransformVector(X3D_Vec3 *Vector, X3D_Vec3 *Result, X3D_Transform *Transform)
+void X3D_TransformVector(X3D_Transform *Transform, X3D_Vec3 *Vector, X3D_Vec3 *Result)
 {
 	X3D_Vec3 Temp;
 
@@ -50,7 +50,7 @@ void X3D_TransformVector(X3D_Vec3 *Vector, X3D_Vec3 *Result, X3D_Transform *Tran
 	X3D_AddVec3Vec3(&Temp, &Transform->Translation, Result);
 }
 
-void X3D_TransformVec3Array(unsigned short Count, X3D_Vec3 *Source, X3D_Vec3 *Destination, X3D_Transform *Transform)
+void X3D_TransformVec3Array(X3D_Transform *Transform, unsigned short Count, X3D_Vec3 *Source, X3D_Vec3 *Destination)
 {
 	unsigned short a;
 	for (a = 0; a < Count; a++)

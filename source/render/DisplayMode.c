@@ -35,18 +35,17 @@ X3D_RESULT InitializeDisplayMode(X3D_Parameters *Parameters)
 {
 	switch (Parameters->DisplayMode)
 	{
-	case X3D_DISPLAY_PAINTER:
-		// ...
-		break;
-	case X3D_DISPLAY_ZBUFFER:
-		// ...
-		break;
-	default: // X3D_DISPLAY_WIREFRAME
+	case X3D_DISPLAY_WIREFRAME:
 		Render.DisplayMode_Initialize = Wireframe_Initialize;
 		Render.DisplayMode_PrepareDraw = Wireframe_PrepareDraw;
 		Render.DisplayMode_Draw = Wireframe_Draw;
 		Render.DisplayMode_Cleanup = Wireframe_Cleanup;
 		Render.DisplayMode_Terminate = Wireframe_Terminate;
+		break;
+	case X3D_DISPLAY_PAINTER:
+	case X3D_DISPLAY_ZBUFFER:
+	default:
+		return X3D_FAILURE;
 	}
 
 	return X3D_SUCCESS;

@@ -24,30 +24,35 @@
 
 // Color Modes
 #define X3D_COLOR_MODE					unsigned char
-#define X3D_COLOR_MONOCHROME			0
-#define X3D_COLOR_GRAYSCALE				1
+#define X3D_COLOR_UNSET					0
+#define X3D_COLOR_MONOCHROME			1
+#define X3D_COLOR_GRAYSCALE				2
 
 // Display Modes
 #define X3D_DISPLAY_MODE				unsigned char
-#define X3D_DISPLAY_WIREFRAME			0
-#define X3D_DISPLAY_PAINTER				1
-#define X3D_DISPLAY_ZBUFFER				2
+#define X3D_DISPLAY_UNSET				0
+#define X3D_DISPLAY_WIREFRAME			1
+#define X3D_DISPLAY_PAINTER				2
+#define X3D_DISPLAY_ZBUFFER				3
 
 // Projection Modes
 #define X3D_PROJECTION_MODE				unsigned char
-#define X3D_PROJECTION_PERSPECTIVE		0
-#define X3D_PROJECTION_ORTHOGRAPHIC		1
+#define X3D_PROJECTION_UNSET			0
+#define X3D_PROJECTION_PERSPECTIVE		1
+#define X3D_PROJECTION_ORTHOGRAPHIC		2
 
 // Backface Cull Modes
 #define X3D_BACKFACECULL_MODE			unsigned char
-#define X3D_BACKFACECULL_OFF			0
-#define X3D_BACKFACECULL_ON				1
+#define X3D_BACKFACECULL_UNSET			0
+#define X3D_BACKFACECULL_OFF			1
+#define X3D_BACKFACECULL_ON				2
 
 // Outline Modes
 #define X3D_OUTLINE_MODE				unsigned char
-#define X3D_OUTLINE_NONE				0
-#define X3D_OUTLINE_BLACK				1
-#define X3D_OUTLINE_OPPOSITE			2
+#define X3D_OUTLINE_UNSET				0
+#define X3D_OUTLINE_NONE				1
+#define X3D_OUTLINE_BLACK				2
+#define X3D_OUTLINE_OPPOSITE			3
 
 typedef struct {
 	X3D_COLOR_MODE			ColorMode;

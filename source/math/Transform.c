@@ -48,6 +48,7 @@ void X3D_InvertTransform(X3D_Transform *Transform, X3D_Transform *Result)
 	Result->Scale.y = (short)((1.0f / Scale) * ScaleBase);
 	Scale = (float)Transform->Scale.z / ScaleBase;
 	Result->Scale.z = (short)((1.0f / Scale) * ScaleBase);
+	Result->ScaleBitShift = Transform->ScaleBitShift;
 }
 
 void X3D_TransformVec3(X3D_Transform *Transform, X3D_Vec3 *Vector, X3D_Vec3 *Result)

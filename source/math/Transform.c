@@ -35,24 +35,53 @@ void X3D_CreateTransform(X3D_Transform *Transform,
 	Transform->ScaleBitShift = 8;
 }
 
-void X3D_TransformVector(X3D_Transform *Transform, X3D_Vec3 *Vector, X3D_Vec3 *Result)
+void X3D_InvertTransform(X3D_Transform *Transform, X3D_Transform *Result)
+{
+	Result->Translation = (X3D_Vec3){-Transform->Translation.x, -Transform->Translation.y, -Transform->Translation.z};
+
+	X3D_TransposeMatrix(&Transform->Rotation, &Result->Rotation);
+
+	float ScaleBase = pow(2.0f, (float)Transform->ScaleBitShift);
+	float Scale = (float)Transform->Scale.x / ScaleBase;
+	Result->Scale.x = (short)((1.0f / Scale) * ScaleBase);
+	Scale = (float)Transform->Scale.y / ScaleBase;
+	Result->Scale.y = (short)((1.0f / Scale) * ScaleBase);
+	Scale = (float)Transform->Scale.z / ScaleBase;
+	Result->Scale.z = (short)((1.0f / Scale) * ScaleBase);
+}
+
+void X3D_TransformVec3(X3D_Transform *Transform, X3D_Vec3 *Vector, X3D_Vec3 *Result)
 {
 	X3D_Vec3 Temp;
 
-	X3D_MultiplyVec3Vec3(Vector, &Transform->Scale, &Temp);
-	unsigned char Shift = Transform->ScaleBitShift;
-	Temp.x >>= Shift;
-	Temp.y >>= Shift;
-	Temp.z >>= Shift;
+	X3D_MultiplyVec3Vec3Shift(Vector, &Transform->Scale, Transform->ScaleBitShift, &Temp);
 
 	X3D_MultiplyMatrixVec3(&Transform->Rotation, &Temp, &Temp);
 
 	X3D_AddVec3Vec3(&Temp, &Transform->Translation, Result);
 }
 
+void X3D_InvertedTransformVec3(X3D_Transform *InvertedTransform, X3D_Vec3 *Vector, X3D_Vec3 *Result)
+{
+	X3D_Vec3 Temp;
+
+	X3D_AddVec3Vec3(Vector, &InvertedTransform->Translation, &Temp);
+
+	X3D_MultiplyMatrixVec3(&InvertedTransform->Rotation, &Temp, &Temp);
+
+	X3D_MultiplyVec3Vec3Shift(&Temp, &InvertedTransform->Scale, InvertedTransform->ScaleBitShift, Result);
+}
+
 void X3D_TransformVec3Array(X3D_Transform *Transform, unsigned short Count, X3D_Vec3 *Source, X3D_Vec3 *Destination)
 {
 	unsigned short a;
 	for (a = 0; a < Count; a++)
-		X3D_TransformVec3(&Source[a], &Destination[a], Transform);
+		X3D_TransformVec3(Transform, &Source[a], &Destination[a]);
+}
+
+void X3D_InvertedTransformVec3Array(X3D_Transform *InvertedTransform, unsigned short Count, X3D_Vec3 *Source, X3D_Vec3 *Destination)
+{
+	unsigned short a;
+	for (a = 0; a < Count; a++)
+		X3D_InvertedTransformVec3(InvertedTransform, &Source[a], &Destination[a]);
 }

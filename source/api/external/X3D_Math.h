@@ -63,6 +63,7 @@ extern const short X3D_TanTable[512];
 inline void X3D_AddVec3Vec3(X3D_Vec3 *VectorA, X3D_Vec3 *VectorB, X3D_Vec3 *Result);
 inline void X3D_SubtractVec3Vec3(X3D_Vec3 *VectorA, X3D_Vec3 *VectorB, X3D_Vec3 *Result);
 inline void X3D_MultiplyVec3Vec3(X3D_Vec3 *VectorA, X3D_Vec3 *VectorB, X3D_Vec3 *Result);
+inline void X3D_MultiplyVec3Vec3Shift(X3D_Vec3 *VectorA, X3D_Vec3 *VectorB, unsigned char Shift, X3D_Vec3 *Result);
 
 // Matrix Operations
 inline void X3D_MultiplyMatrixVec3(X3D_Matrix *Matrix, X3D_Vec3 *Vector, X3D_Vec3 *Result);

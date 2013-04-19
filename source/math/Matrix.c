@@ -26,7 +26,7 @@ void X3D_MultiplyMatrixVec3(X3D_Matrix *Matrix, X3D_Vec3 *Vector, X3D_Vec3 *Resu
 {
 	X3D_Vec3 Temp;
 
-	long XY = Vector->x * Vector->y;
+	long XY = (long)Vector->x * Vector->y;
 	Temp.x = ((Matrix->_11 + Vector->y) * (Matrix->_12 + Vector->x) - (Matrix->_11_12 + XY) + (Matrix->_13 * Vector->z)) >> 8;
 	Temp.y = ((Matrix->_21 + Vector->y) * (Matrix->_22 + Vector->x) - (Matrix->_21_22 + XY) + (Matrix->_23 * Vector->z)) >> 8;
 	Temp.z = ((Matrix->_31 + Vector->y) * (Matrix->_32 + Vector->x) - (Matrix->_31_32 + XY) + (Matrix->_33 * Vector->z)) >> 8;

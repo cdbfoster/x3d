@@ -42,3 +42,10 @@ void X3D_MultiplyVec3Vec3(X3D_Vec3 *VectorA, X3D_Vec3 *VectorB, X3D_Vec3 *Result
 	Result->y = VectorA->y * VectorB->y;
 	Result->z = VectorA->z * VectorB->z;
 }
+
+void X3D_MultiplyVec3Vec3Shift(X3D_Vec3 *VectorA, X3D_Vec3 *VectorB, unsigned char Shift, X3D_Vec3 *Result)
+{
+	Result->x = (short)(((long)VectorA->x * VectorB->x) >> Shift);
+	Result->y = (short)(((long)VectorA->y * VectorB->y) >> Shift);
+	Result->z = (short)(((long)VectorA->z * VectorB->z) >> Shift);
+}

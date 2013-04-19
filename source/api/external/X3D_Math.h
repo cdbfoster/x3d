@@ -75,8 +75,11 @@ inline void X3D_CreateTransform(X3D_Transform *Transform,
 								short TranslationX, short TranslationY, short TranslationZ,
 								X3D_ANGLE AngleX, X3D_ANGLE AngleY, X3D_ANGLE AngleZ,
 								float ScaleX, float ScaleY, float ScaleZ);
+inline void X3D_InvertTransform(X3D_Transform *Transform, X3D_Transform *Result);
 // Source and Destination may point to the same location
 inline void X3D_TransformVec3(X3D_Transform *Transform, X3D_Vec3 *Vector, X3D_Vec3 *Result);
+inline void X3D_InvertedTransformVec3(X3D_Transform *InvertedTransform, X3D_Vec3 *Vector, X3D_Vec3 *Result);
 inline void X3D_TransformVec3Array(X3D_Transform *Transform, unsigned short Count, X3D_Vec3 *Source, X3D_Vec3 *Destination);
+inline void X3D_InvertedTransformVec3Array(X3D_Transform *InvertedTransform, unsigned short Count, X3D_Vec3 *Source, X3D_Vec3 *Destination);
 
 #endif

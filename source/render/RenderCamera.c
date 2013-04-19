@@ -36,9 +36,7 @@ X3D_RESULT X3D_UpdateRenderCamera(X3D_Camera *Camera)
 
 	memcpy(&RenderCamera.User, Camera, sizeof(X3D_Camera));
 
-	X3D_Matrix *InverseViewMatrix = &Camera->Transform.Rotation;
-
-	X3D_TransposeMatrix(InverseViewMatrix, &RenderCamera.ViewMatrix);
+	X3D_InvertTransform(&Camera->Transform, &RenderCamera.ViewTransform);
 
 	unsigned char AngleH = RenderCamera.User.HorizontalFOV / 2;
 	unsigned char AngleV = RenderCamera.User.VerticalFOV / 2;
@@ -81,19 +79,12 @@ X3D_RESULT X3D_UpdateRenderCamera(X3D_Camera *Camera)
 
 	unsigned char Plane;
 	for (Plane = 0; Plane < 6; Plane++)
-	{
-		X3D_MultiplyMatrixVec3(InverseViewMatrix, &PlaneNormal[Plane], &ViewFrustum[Plane].Normal);
-
-		X3D_Vec3 *Translation = &RenderCamera.User.Transform.Translation;
-		ViewFrustum[Plane].PlaneConstant += (long)(ViewFrustum[Plane].Normal.x) * Translation->x +
-											(long)(ViewFrustum[Plane].Normal.y) * Translation->y +
-											(long)(ViewFrustum[Plane].Normal.z) * Translation->z;
-	}
+		X3D_TransformVec3(&Camera->Transform, &PlaneNormal[Plane], &ViewFrustum[Plane].Normal);
 
 	return X3D_SUCCESS;
 }
 
-X3D_RESULT FrustumCullPolygons(X3D_Vertices *Vertices, X3D_Triangles *Triangles, X3D_Vertices *ResultVertices, X3D_Polygons *ResultPolygons)
+X3D_RESULT FrustumCullTriangles(X3D_Vertices *Vertices, X3D_Triangles *Triangles, X3D_Vertices *ResultVertices, X3D_Polygons *ResultPolygons)
 {
 	ResultVertices->VertexCount = Vertices->VertexCount;
 	ResultVertices->Vertices = malloc(ResultVertices->VertexCount * sizeof(X3D_Vertex)); // Make sure to check for failure
@@ -111,6 +102,14 @@ X3D_RESULT FrustumCullPolygons(X3D_Vertices *Vertices, X3D_Triangles *Triangles,
 
 X3D_RESULT ViewTransformVertices(X3D_Vertices *Vertices, X3D_Vertices *ResultVertices)
 {
+	if (Vertices != ResultVertices && ResultVertices->Vertices == NULL)
+	{
+		ResultVertices->VertexCount = Vertices->VertexCount;
+		if (!(ResultVertices->Vertices = malloc(ResultVertices->VertexCount * sizeof(X3D_Vertex))))
+			return X3D_MEMORYERROR;
+	}
+	
+	X3D_InvertedTransformVec3Array(&RenderCamera.ViewTransform, Vertices->VertexCount, Vertices->Vertices, ResultVertices->Vertices);
 
 	return X3D_SUCCESS;
 }

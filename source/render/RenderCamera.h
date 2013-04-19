@@ -35,7 +35,7 @@
 
 typedef struct {
 	X3D_Camera User;
-	X3D_Matrix ViewMatrix; // User camera actually contains the inverse view matrix (View to World).
+	X3D_Transform ViewTransform; // User camera actually contains the inverse view transform (View to World).
 	X3D_Plane ViewFrustum[6];
 } RenderCameraType;
 

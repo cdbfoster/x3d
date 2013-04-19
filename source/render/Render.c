@@ -22,6 +22,7 @@
 #include <tigcclib.h>
 #include "../api/external/X3D_Utility.h"
 #include "../api/external/X3D_Render.h"
+#include "../api/external/X3D_Draw.h"
 #include "../api/internal/System.h"
 #include "../api/internal/Render.h"
 
@@ -80,9 +81,16 @@ X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Triangles *Triangles)
 	if (X3D_FAILED(Result))
 		return Result;
 
+	unsigned char a;
+	for (a = 0; a < ClippedVertices.VertexCount; a++)
+		printf("%d, %d, %d\n", ClippedVertices.Vertices[a].x, ClippedVertices.Vertices[a].y, ClippedVertices.Vertices[a].z);
+
 	Result = ViewTransformVertices(&ClippedVertices, &ClippedVertices);
 	if (X3D_FAILED(Result))
 		return Result;
+
+	for (a = 0; a < ClippedVertices.VertexCount; a++)
+		printf("%d, %d, %d\n", ClippedVertices.Vertices[a].x, ClippedVertices.Vertices[a].y, ClippedVertices.Vertices[a].z);
 
 	//Result = Render.ProjectionMode_ProjectVertices(&ClippedVertices, &ClippedVertices);
 	//if (X3D_FAILED(Result))
@@ -93,22 +101,22 @@ X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Triangles *Triangles)
 	//if (X3D_FAILED(Result))
 	//	return Result;
 
-	X3D_Vertices DrawVertices;
-	X3D_Polygons DrawPolygons;
-	Result = Render.DisplayMode_PrepareDraw(&ClippedVertices, &ClippedPolygons/*&BackfaceCulledPolygons*/, &DrawVertices, &DrawPolygons);
-	if (X3D_FAILED(Result))
-		return Result;
+	//X3D_Vertices DrawVertices;
+	//X3D_Polygons DrawPolygons;
+	//Result = Render.DisplayMode_PrepareDraw(&ClippedVertices, &ClippedPolygons/*&BackfaceCulledPolygons*/, &DrawVertices, &DrawPolygons);
+	//if (X3D_FAILED(Result))
+	//	return Result;
 
-	Result = Render.DisplayMode_Draw(&DrawVertices, &DrawPolygons);
-	if (X3D_FAILED(Result))
-		return Result;
+	//Result = Render.DisplayMode_Draw(&DrawVertices, &DrawPolygons);
+	//if (X3D_FAILED(Result))
+	//	return Result;
 
-	Result = Render.DisplayMode_Cleanup();
-	if (X3D_FAILED(Result))
-		return Result;
+	//Result = Render.DisplayMode_Cleanup();
+	//if (X3D_FAILED(Result))
+	//	return Result;
 
-	free(DrawPolygons.Polygons);
-	free(DrawVertices.Vertices);
+	//free(DrawPolygons.Polygons);
+	//free(DrawVertices.Vertices);
 	//free(BackfaceCulledPolygons.Polygons);
 	free(ClippedPolygons.Polygons);
 	free(ClippedVertices.Vertices);

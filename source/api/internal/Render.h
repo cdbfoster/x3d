@@ -26,7 +26,8 @@
 
 typedef struct {
 	X3D_COLOR Color;
-	unsigned short Vertices[6];
+	unsigned short Vertices[9];
+	unsigned char VertexCount;
 } X3D_Polygon;
 
 typedef struct {

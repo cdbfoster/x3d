@@ -28,7 +28,7 @@
 #include "DisplayMode.h"
 
 #include "displaymode/WireframeDisplayMode.h"
-//#include "displaymode/PainterDisplayMode.h"
+#include "displaymode/PainterDisplayMode.h"
 //#include "displaymode/ZBufferDisplayMode.h"
 
 X3D_RESULT InitializeDisplayMode(X3D_Parameters *Parameters)
@@ -42,6 +42,11 @@ X3D_RESULT InitializeDisplayMode(X3D_Parameters *Parameters)
 		Render.DisplayMode_Terminate = Wireframe_Terminate;
 		break;
 	case X3D_DISPLAY_PAINTER:
+		Render.DisplayMode_Initialize = Painter_Initialize;
+		Render.DisplayMode_Draw = Painter_Draw;
+		Render.DisplayMode_Cleanup = Painter_Cleanup;
+		Render.DisplayMode_Terminate = Painter_Terminate;
+		break;
 	case X3D_DISPLAY_ZBUFFER:
 	default:
 		return X3D_FAILURE;

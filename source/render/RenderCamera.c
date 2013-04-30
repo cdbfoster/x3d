@@ -197,20 +197,18 @@ X3D_RESULT FrustumCullTriangles(X3D_Vertices *Vertices, X3D_Triangles *Triangles
 
 	if (ResultVertices->Vertices == NULL)
 	{
-		ResultVertices->VertexCount = VertexCount;
 		if (!(ResultVertices->Vertices = malloc(VertexCount * sizeof(X3D_Vertex))))
 			return X3D_MEMORYERROR;
 	}
 	else
 	{
-		if (ResultVertices->VertexCount < VertexCount)
+		if (ResultVertices->VertexCount != VertexCount)
 			if (!(ResultVertices->Vertices = realloc(ResultVertices->Vertices, VertexCount * sizeof(X3D_Vertex))))
 				return X3D_MEMORYERROR;
-
-		ResultVertices->VertexCount = VertexCount;
 	}
 
 	memcpy(ResultVertices->Vertices, Vertices->Vertices, Vertices->VertexCount * sizeof(X3D_Vertex));
+	ResultVertices->VertexCount = VertexCount;
 
 	X3D_Vertex *OverflowStart = ResultVertices->Vertices + Vertices->VertexCount;
 	memcpy(OverflowStart, OverflowVertices, OverflowVertexCount * sizeof(X3D_Vertex));

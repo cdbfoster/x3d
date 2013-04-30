@@ -23,7 +23,9 @@
 
 #include "../../api/external/X3D_Utility.h"
 #include "../../api/external/X3D_Render.h"
+#include "../../api/external/X3D_Draw.h"
 #include "../../api/internal/Render.h"
+#include "../../api/internal/System.h"
 
 #include "WireframeDisplayMode.h"
 
@@ -34,6 +36,26 @@ X3D_RESULT Wireframe_Initialize()
 
 X3D_RESULT Wireframe_Draw(X3D_Vertices *Vertices, X3D_Polygons *Polygons)
 {
+	unsigned short a;
+	for (a = 0; a < Polygons->PolygonCount; a++)
+	{
+		X3D_Polygon *Polygon = &Polygons->Polygons[a];
+		
+		unsigned char b;
+		for (b = 0; b < Polygon->VertexCount - 1; b++)
+		{
+			X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[b]];
+			X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[b + 1]];
+
+			X3D_DrawLine_Clipped(EngineState.General.Plane1, PointA->x, PointA->y, PointB->x, PointB->y, Polygon->Color);
+		}
+		
+		X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[Polygon->VertexCount - 1]];
+		X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[0]];
+
+		X3D_DrawLine_Clipped(EngineState.General.Plane1, PointA->x, PointA->y, PointB->x, PointB->y, Polygon->Color);
+	}
+
 	return X3D_SUCCESS;
 }
 

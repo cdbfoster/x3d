@@ -49,15 +49,56 @@ X3D_RESULT InitializeBackfaceCullMode(X3D_Parameters *Parameters)
 
 X3D_RESULT Cull(X3D_Vertices *Vertices, X3D_Polygons *Polygons, X3D_Polygons *ResultPolygons)
 {
+	unsigned short OkayCount = 0;
+	unsigned char Okay[Polygons->PolygonCount];
+
+	unsigned short a;
+	for (a = 0; a < Polygons->PolygonCount; a++)
+	{
+		X3D_Vec2 *v0 = (X3D_Vec2 *)&Vertices->Vertices[Polygons->Polygons[a].Vertices[0]];
+		X3D_Vec2 *v1 = (X3D_Vec2 *)&Vertices->Vertices[Polygons->Polygons[a].Vertices[1]];
+		X3D_Vec2 *v2 = (X3D_Vec2 *)&Vertices->Vertices[Polygons->Polygons[a].Vertices[2]];
+
+		X3D_Vec2 e0 = (X3D_Vec2){v0->x - v1->x, v0->y - v1->y};
+		X3D_Vec2 e1 = (X3D_Vec2){v2->x - v1->x, v2->y - v1->y};
+		Okay[a] = ((e0.x * e1.y < e0.y * e1.x) ? 1 : 0);
+
+		if (Okay[a] == 1)
+			OkayCount++;
+	}
+
+	if (OkayCount == 0)
+	{
+		ResultPolygons->PolygonCount = 0;
+		return X3D_SUCCESS;
+	}
+
+	if (ResultPolygons->Polygons == NULL)
+	{
+		if (!(ResultPolygons->Polygons = malloc(OkayCount * sizeof(X3D_Polygon))))
+			return X3D_MEMORYERROR;
+	}
+	else
+	{
+		if (ResultPolygons->PolygonCount != OkayCount)
+			if (!(ResultPolygons->Polygons = realloc(ResultPolygons->Polygons, OkayCount * sizeof(X3D_Polygon))))
+				return X3D_MEMORYERROR;
+	}
+
+	ResultPolygons->PolygonCount = OkayCount;
+
+	unsigned short b = 0;
+	for (a = 0; a < Polygons->PolygonCount; a++)
+	{
+		if (Okay[a])
+			ResultPolygons->Polygons[b++] = Polygons->Polygons[a];
+	}
 
 	return X3D_SUCCESS;
 }
 
 X3D_RESULT NoCull(X3D_Vertices *Vertices, X3D_Polygons *Polygons, X3D_Polygons *ResultPolygons)
 {
-	if (Polygons == ResultPolygons)
-		return X3D_SUCCESS;
-
 	if (ResultPolygons->Polygons == NULL)
 	{
 		if (!(ResultPolygons->Polygons = malloc(Polygons->PolygonCount * sizeof(X3D_Polygon))))

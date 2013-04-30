@@ -78,8 +78,6 @@ X3D_RESULT X3D_InitializeEngine(X3D_Parameters *InitialParameters)
 				EngineState.General.Plane2 = Plane;
 				PlaneOwnership |= PLANE2_OWNED;
 			}
-
-			GrayOn();
 		}
 
 		EngineState.State |= ENGINESTATE_COLORMODE_INITIALIZED;
@@ -103,9 +101,6 @@ X3D_RESULT X3D_TerminateEngine()
 	
 	if (EngineState.State & ENGINESTATE_COLORMODE_INITIALIZED)
 	{
-		if (EngineState.General.ColorMode == X3D_COLOR_GRAYSCALE)
-			GrayOff();
-
 		if (PlaneOwnership & PLANE1_OWNED)
 		{
 			free(EngineState.General.Plane1);
@@ -140,8 +135,6 @@ X3D_RESULT X3D_SetEngineParameters(X3D_Parameters *Parameters)
 
 		if (Parameters->ColorMode == X3D_COLOR_MONOCHROME)
 		{
-			GrayOff();
-			
 			if (PlaneOwnership & PLANE2_OWNED)
 			{
 				free(EngineState.General.Plane2);
@@ -149,8 +142,6 @@ X3D_RESULT X3D_SetEngineParameters(X3D_Parameters *Parameters)
 			}
 			EngineState.General.Plane2 = NULL;
 		}
-		else
-			GrayOn();
 
 		EngineState.General.ColorMode = Parameters->ColorMode;
 	}

@@ -106,9 +106,12 @@ X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Triangles *Triangles)
 	if (X3D_FAILED(Result))
 		return Result;
 
-	free(BackfaceCulledPolygons.Polygons);
-	free(ClippedPolygons.Polygons);
-	free(ClippedVertices.Vertices);
+	if (BackfaceCulledPolygons.Polygons != NULL)
+		free(BackfaceCulledPolygons.Polygons);
+	if (ClippedPolygons.Polygons != NULL)
+		free(ClippedPolygons.Polygons);
+	if (ClippedVertices.Vertices != NULL)
+		free(ClippedVertices.Vertices);
 
 	return X3D_SUCCESS;
 }

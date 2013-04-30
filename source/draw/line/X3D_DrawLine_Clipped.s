@@ -257,7 +257,7 @@ DYGreater:
 	scc.b	%d5		| Set a byte of d5 if dy is even.
 	sub.w	%d3, %d1
 
-	lea	(DrawLoop_DYGreater + 18, %pc), %a2
+	lea	(DrawLoop_DYGreater + 14, %pc), %a2
 
 	tst.w	%d5
 	bpl.s	PositiveSlope
@@ -282,8 +282,8 @@ DrawLoop_DYGreater:
 	or.b	%d6, (%a0)
 	or.b	%d7, (%a1)
 
-	lea	(30, %a0), %a0	| These instructions are each four bytes long
-	lea	(-30, %a1), %a1	|
+	add.w	%d4, %a0
+	sub.w	%d4, %a1
 	add.w	%d2, %d1
 	bmi.s	1f
 	sub.w	%d3, %d1

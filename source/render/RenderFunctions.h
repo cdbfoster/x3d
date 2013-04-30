@@ -26,7 +26,6 @@
 
 typedef struct {
 	X3D_RESULT (*DisplayMode_Initialize)();
-	X3D_RESULT (*DisplayMode_PrepareDraw)(X3D_Vertices *Vertices, X3D_Polygons *Polygons, X3D_Vertices *ResultVertices, X3D_Polygons *ResultPolygons);
 	X3D_RESULT (*DisplayMode_Draw)(X3D_Vertices *Vertices, X3D_Polygons *Polygons);
 	X3D_RESULT (*DisplayMode_Cleanup)();
 	X3D_RESULT (*DisplayMode_Terminate)();

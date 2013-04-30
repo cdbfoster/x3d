@@ -44,17 +44,17 @@ X3D_RESULT InitializeRender(X3D_Parameters *Parameters)
 			return Result;
 	}
 
-	/*if (EngineState.General.ProjectionMode != Parameters->ProjectionMode)
+	if (EngineState.General.ProjectionMode != Parameters->ProjectionMode)
 	{
 		Result = InitializeProjectionMode(Parameters);
-		if (X3D_FAILED(Result)
+		if (X3D_FAILED(Result))
 			return Result;
-	}*/
+	}
 
 	/*if (EngineState.General.BackfaceCullMode != Parameters->BackfaceCullMode)
 	{
 		Result = InitializeProjectionMode(Parameters);
-		if (X3D_FAILED(Result)
+		if (X3D_FAILED(Result))
 			return Result;
 	}*/
  
@@ -75,48 +75,60 @@ X3D_RESULT X3D_Render(X3D_Vertices *Vertices, X3D_Triangles *Triangles)
 		return X3D_FAILURE;
 
 	X3D_Vertices ClippedVertices;
+	ClippedVertices.Vertices = NULL;
 	X3D_Polygons ClippedPolygons;
+	ClippedPolygons.Polygons = NULL;
+
+	unsigned char a;
+	for (a = 0; a < Vertices->VertexCount; a++)
+		printf("%d, %d, %d\n", Vertices->Vertices[a].x, Vertices->Vertices[a].y, Vertices->Vertices[a].z);
 
 	X3D_RESULT Result = FrustumCullTriangles(Vertices, Triangles, &ClippedVertices, &ClippedPolygons);
 	if (X3D_FAILED(Result))
 		return Result;
 
-	unsigned char a;
-	for (a = 0; a < ClippedVertices.VertexCount; a++)
-		printf("%d, %d, %d\n", ClippedVertices.Vertices[a].x, ClippedVertices.Vertices[a].y, ClippedVertices.Vertices[a].z);
+	printf("\n");
+
+	for (a = 0; a < ClippedPolygons.Polygons[0].VertexCount; a++)
+		printf("%d, %d, %d\n", ClippedVertices.Vertices[ClippedPolygons.Polygons[0].Vertices[a]].x, ClippedVertices.Vertices[ClippedPolygons.Polygons[0].Vertices[a]].y, ClippedVertices.Vertices[ClippedPolygons.Polygons[0].Vertices[a]].z);
 
 	Result = ViewTransformVertices(&ClippedVertices, &ClippedVertices);
 	if (X3D_FAILED(Result))
 		return Result;
 
-	for (a = 0; a < ClippedVertices.VertexCount; a++)
-		printf("%d, %d, %d\n", ClippedVertices.Vertices[a].x, ClippedVertices.Vertices[a].y, ClippedVertices.Vertices[a].z);
+	Result = Render.ProjectionMode_ProjectVertices(&ClippedVertices, &ClippedVertices);
+	if (X3D_FAILED(Result))
+		return Result;
 
-	//Result = Render.ProjectionMode_ProjectVertices(&ClippedVertices, &ClippedVertices);
-	//if (X3D_FAILED(Result))
-	//	return Result;
+	ngetchx();
+	clrscr();
+	//X3D_ClearScreen(LCD_MEM);
 
-	//X3D_Polygons BackfaceCulledPolygons
+	X3D_Vec2 points[ClippedPolygons.Polygons[0].VertexCount];
+	for (a = 0; a < ClippedPolygons.Polygons[0].VertexCount; a++)
+	{
+		points[a] = *(X3D_Vec2 *)&ClippedVertices.Vertices[ClippedPolygons.Polygons[0].Vertices[a]];
+		printf("%d, %d\n", points[a].x, points[a].y);
+	}
+	ngetchx();
+	X3D_ClearScreen(LCD_MEM);
+	X3D_FillConvexPolygon(LCD_MEM, ClippedPolygons.Polygons[0].VertexCount, points, X3D_COLORS_BLACK);
+
+	ngetchx();
+
+	//X3D_Polygons BackfaceCulledPolygons;
 	//Result = Render.BackfaceCullMode_CullPolygons(&ClippedVertices, &ClippedPolygons, &BackfaceCulledPolygons);
 	//if (X3D_FAILED(Result))
 	//	return Result;
 
-	//X3D_Vertices DrawVertices;
-	//X3D_Polygons DrawPolygons;
-	//Result = Render.DisplayMode_PrepareDraw(&ClippedVertices, &ClippedPolygons/*&BackfaceCulledPolygons*/, &DrawVertices, &DrawPolygons);
-	//if (X3D_FAILED(Result))
-	//	return Result;
+	Result = Render.DisplayMode_Draw(&ClippedVertices, &ClippedPolygons/*&BackfaceCulledPolygons*/);
+	if (X3D_FAILED(Result))
+		return Result;
 
-	//Result = Render.DisplayMode_Draw(&DrawVertices, &DrawPolygons);
-	//if (X3D_FAILED(Result))
-	//	return Result;
+	Result = Render.DisplayMode_Cleanup();
+	if (X3D_FAILED(Result))
+		return Result;
 
-	//Result = Render.DisplayMode_Cleanup();
-	//if (X3D_FAILED(Result))
-	//	return Result;
-
-	//free(DrawPolygons.Polygons);
-	//free(DrawVertices.Vertices);
 	//free(BackfaceCulledPolygons.Polygons);
 	free(ClippedPolygons.Polygons);
 	free(ClippedVertices.Vertices);

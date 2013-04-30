@@ -22,18 +22,12 @@
 #include <tigcclib.h>
 
 #include "../../api/external/X3D_Utility.h"
-#include "../../api/external/X3D_System.h"
 #include "../../api/external/X3D_Render.h"
 #include "../../api/internal/Render.h"
 
 #include "WireframeDisplayMode.h"
 
 X3D_RESULT Wireframe_Initialize()
-{
-	return X3D_SUCCESS;
-}
-
-X3D_RESULT Wireframe_PrepareDraw(X3D_Vertices *Vertices, X3D_Polygons *Polygons, X3D_Vertices *ResultVertices, X3D_Polygons *ResultPolygons)
 {
 	return X3D_SUCCESS;
 }

@@ -58,63 +58,79 @@ X3D_RESULT Painter_Draw(X3D_Vertices *Vertices, X3D_Polygons *Polygons)
 
 	ZSortPolygons(Polygons->PolygonCount, AverageZDepths, SortedIndices);
 
-	for (a = 0; a < Polygons->PolygonCount; a++)
-	{
-		X3D_Polygon *Polygon = &Polygons->Polygons[SortedIndices[a]];
-
-		X3D_Vec2 Points[Polygon->VertexCount];
-		unsigned short b;
-		for (b = 0; b < Polygon->VertexCount; b++)
-			Points[b] = *(X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[b]];
-
-		X3D_FillGrayConvexPolygon(EngineState.General.Plane1, EngineState.General.Plane2, Polygon->VertexCount, Points, Polygon->Color);
-	}
-
-	/*
 	if (EngineState.General.ColorMode == X3D_COLOR_GRAYSCALE)
 	{
-		unsigned short a;
 		for (a = 0; a < Polygons->PolygonCount; a++)
 		{
-			X3D_Polygon *Polygon = &Polygons->Polygons[a];
-			
-			unsigned char b;
-			for (b = 0; b < Polygon->VertexCount - 1; b++)
+			X3D_Polygon *Polygon = &Polygons->Polygons[SortedIndices[a]];
+
+			X3D_Vec2 Points[Polygon->VertexCount];
+			unsigned short b;
+			for (b = 0; b < Polygon->VertexCount; b++)
+				Points[b] = *(X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[b]];
+
+			X3D_FillGrayConvexPolygon(EngineState.General.Plane1, EngineState.General.Plane2, Polygon->VertexCount, Points, Polygon->Color);
+
+			if (EngineState.General.OutlineMode != X3D_OUTLINE_NONE)
 			{
-				X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[b]];
-				X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[b + 1]];
+				X3D_COLOR Color = X3D_COLORS_BLACK;
 
-				X3D_DrawGrayLine_Clipped(EngineState.General.Plane1, EngineState.General.Plane2, PointA->x, PointA->y, PointB->x, PointB->y, Polygon->Color);
+				if (EngineState.General.OutlineMode == X3D_OUTLINE_OPPOSITE)
+					Color = X3D_COLORS_BLACK - Polygon->Color;
+
+				unsigned char c;
+				for (c = 0; c < Polygon->VertexCount - 1; c++)
+				{
+					X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[c]];
+					X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[c + 1]];
+
+					X3D_DrawGrayLine_Clipped(EngineState.General.Plane1, EngineState.General.Plane2, PointA->x, PointA->y, PointB->x, PointB->y, Color);
+				}
+				
+				X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[Polygon->VertexCount - 1]];
+				X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[0]];
+
+				X3D_DrawGrayLine_Clipped(EngineState.General.Plane1, EngineState.General.Plane2, PointA->x, PointA->y, PointB->x, PointB->y, Color);
 			}
-			
-			X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[Polygon->VertexCount - 1]];
-			X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[0]];
-
-			X3D_DrawGrayLine_Clipped(EngineState.General.Plane1, EngineState.General.Plane2, PointA->x, PointA->y, PointB->x, PointB->y, Polygon->Color);
 		}
 	}
 	else
 	{
-		unsigned short a;
 		for (a = 0; a < Polygons->PolygonCount; a++)
 		{
-			X3D_Polygon *Polygon = &Polygons->Polygons[a];
-			
-			unsigned char b;
-			for (b = 0; b < Polygon->VertexCount - 1; b++)
+			X3D_Polygon *Polygon = &Polygons->Polygons[SortedIndices[a]];
+
+			X3D_Vec2 Points[Polygon->VertexCount];
+			unsigned short b;
+			for (b = 0; b < Polygon->VertexCount; b++)
+				Points[b] = *(X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[b]];
+
+			X3D_FillConvexPolygon(EngineState.General.Plane1, Polygon->VertexCount, Points, Polygon->Color);
+
+			if (EngineState.General.OutlineMode != X3D_OUTLINE_NONE)
 			{
-				X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[b]];
-				X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[b + 1]];
+				X3D_COLOR Color = X3D_COLORS_BLACK;
 
-				X3D_DrawLine_Clipped(EngineState.General.Plane1, PointA->x, PointA->y, PointB->x, PointB->y, Polygon->Color);
+				if (EngineState.General.OutlineMode == X3D_OUTLINE_OPPOSITE)
+					Color = X3D_COLORS_BLACK - Polygon->Color;
+
+				unsigned char c;
+				for (c = 0; c < Polygon->VertexCount - 1; c++)
+				{
+					X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[c]];
+					X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[c + 1]];
+
+					X3D_DrawLine_Clipped(EngineState.General.Plane1, PointA->x, PointA->y, PointB->x, PointB->y, Color);
+				}
+				
+				X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[Polygon->VertexCount - 1]];
+				X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[0]];
+
+				X3D_DrawLine_Clipped(EngineState.General.Plane1, PointA->x, PointA->y, PointB->x, PointB->y, Color);
 			}
-			
-			X3D_Vec2 *PointA = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[Polygon->VertexCount - 1]];
-			X3D_Vec2 *PointB = (X3D_Vec2 *)&Vertices->Vertices[Polygon->Vertices[0]];
-
-			X3D_DrawLine_Clipped(EngineState.General.Plane1, PointA->x, PointA->y, PointB->x, PointB->y, Polygon->Color);
 		}
-	}//*/
+	}
+	
 	return X3D_SUCCESS;
 }
 

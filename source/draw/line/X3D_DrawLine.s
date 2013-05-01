@@ -30,7 +30,8 @@ X3D_DrawLine:
 	exg	%d1, %d3
 
 NoExchange:
-	move.w	(6 * 4 + 4, %sp), %d4	| Color parameter
+	clr.w	%d4
+	move.b	(6 * 4 + 4 + 1, %sp), %d4	| Color parameter
 
 	cmp.b	(PreviousState, %pc), %d4
 	beq.s	PreviousStateOkay
@@ -54,9 +55,9 @@ NoExchange:
 	move.b	%d4, (DrawLoop_DYGreater - StateChangeAnchor + 2, %a2)	|
 	move.b	(%a1)+, %d4
 	move.b	%d4, (DrawLoop_DXGreater - StateChangeAnchor + 6, %a2)	| Branch condition for the left mask
-	move.b	%d4, (DrawLoop_DYGreater - StateChangeAnchor + 20, %a2)	|
+	move.b	%d4, (DrawLoop_DYGreater - StateChangeAnchor + 16, %a2)	|
 	move.b	%d4, (DrawLoop_DXGreater - StateChangeAnchor + 12, %a2)	| Branch condition for the right mask
-	move.b	%d4, (DrawLoop_DYGreater - StateChangeAnchor + 26, %a2)	|
+	move.b	%d4, (DrawLoop_DYGreater - StateChangeAnchor + 22, %a2)	|
 	move.w	(%a1), %d4
 	move.w	%d4, (SetupPoints - StateChangeAnchor + 24, %a2)	| Mask setter for left mask
 	addi.w	#0x0200, %d4

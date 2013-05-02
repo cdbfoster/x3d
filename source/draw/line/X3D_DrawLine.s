@@ -26,8 +26,8 @@ X3D_DrawLine:
 
 	cmp.w	%d0, %d2
 	bhi.s	NoExchange
-	exg	%d0, %d2
-	exg	%d1, %d3
+	exg		%d0, %d2
+	exg		%d1, %d3
 
 NoExchange:
 	clr.w	%d4
@@ -36,17 +36,17 @@ NoExchange:
 	cmp.b	(PreviousState, %pc), %d4
 	beq.s	PreviousStateOkay
 
-	lea	(PreviousState, %pc), %a2
+	lea		(PreviousState, %pc), %a2
 	move.b	%d4, (%a2)
 
-	lea	(ColorData, %pc), %a1
+	lea		(ColorData, %pc), %a1
 	lsr.w	#1, %d4
 	lsl.w	#2, %d4
 	adda.w	%d4, %a1
 
 	move.b	(%a1)+, %d4
 
-	lea	(StateChangeAnchor, %pc), %a2
+	lea		(StateChangeAnchor, %pc), %a2
 	move.b	%d4, (DrawLoop_DXGreater - StateChangeAnchor, %a2)	| Masking operator using %d6
 	move.b	%d4, (DrawLoop_DYGreater - StateChangeAnchor, %a2)	|
 	move.b	%d4, (DrawCenter - StateChangeAnchor + 4, %a2)		|
@@ -139,7 +139,7 @@ DrawLoop_DXGreater:
 	add.w	%d4, %a0
 	sub.w	%d4, %a1
 2:
-	dbf	%d0, DrawLoop_DXGreater
+	dbf		%d0, DrawLoop_DXGreater
 
 DrawCenter:
 	tst.b	%d5
@@ -158,7 +158,7 @@ DYGreater:
 	scc.b	%d5		| Set a byte of d5 if dy is even.
 	sub.w	%d3, %d1
 
-	lea	(DrawLoop_DYGreater + 14, %pc), %a2
+	lea		(DrawLoop_DYGreater + 14, %pc), %a2
 
 	tst.w	%d5
 	bpl.s	PositiveSlope
@@ -168,8 +168,8 @@ DYGreater:
 	move.w	#0xE21F, (6, %a2)	|	ror.b	#1, %d7
 	move.w	#0x5249, (10,%a2)	|	addq.w	#1, %a1
 
-	exg	%a0, %a1
-	exg	%d6, %d7
+	exg		%a0, %a1
+	exg		%d6, %d7
 	bra.s	DrawLoop_DYGreater
 
 PositiveSlope:
@@ -196,7 +196,7 @@ DrawLoop_DYGreater:
 	bcc.s	1f
 	subq.w	#1, %a1
 1:
-	dbf	%d0, DrawLoop_DYGreater
+	dbf		%d0, DrawLoop_DYGreater
 	bra.s	DrawCenter
 
 ColorData:

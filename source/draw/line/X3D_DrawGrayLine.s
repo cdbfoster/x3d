@@ -26,8 +26,8 @@ X3D_DrawGrayLine:
 
 	cmp.w	%d0, %d2
 	bhi.s	NoExchange
-	exg	%d0, %d2
-	exg	%d1, %d3
+	exg		%d0, %d2
+	exg		%d1, %d3
 
 NoExchange:
 	move.w	(4 * 4 + 4, %sp), %d4	| Color parameter
@@ -35,10 +35,10 @@ NoExchange:
 	cmp.b	(PreviousState, %pc), %d4
 	beq.s	PreviousStateOkay
 
-	lea	(PreviousState, %pc), %a2
+	lea		(PreviousState, %pc), %a2
 	move.b	%d4, (%a2)
 
-	lea	(StateChangeAnchor, %pc), %a2
+	lea		(StateChangeAnchor, %pc), %a2
 
 	move.b	#0x90, %d5	| Changes a bxxx %d5, <ea> instruction into a bclr %d5, (%a0) instruction
 	lsr.b	#1, %d4
@@ -109,7 +109,7 @@ SameByte:
 	add.w	%d4, %a0
 	add.w	%d4, %a1
 SameRow:
-	dbf	%d0, DrawLoop_DXGreater
+	dbf		%d0, DrawLoop_DXGreater
 
 Exit:
 	movem.l (%sp)+, %d3 - %d5 / %a2
@@ -136,7 +136,7 @@ DrawLoop_DYGreater:
 	addq.w	#1, %a1
 SameByte2:
 SameColumn:
-	dbf	%d0, DrawLoop_DYGreater
+	dbf		%d0, DrawLoop_DYGreater
 	bra.s	Exit
 
 PreviousState:

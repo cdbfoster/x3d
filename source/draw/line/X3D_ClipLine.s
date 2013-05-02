@@ -26,23 +26,23 @@
 X3D_ClipLine:
 	movem.l	%d3 - %d7, -(%sp)
 
-	bsr	GetClippingCode		| Just barely missed the opportunity to use a short branch here... sigh.
-	exg	%d0, %d2
-	exg	%d1, %d3
-	exg	%d4, %d5
+	bsr		GetClippingCode		| Just barely missed the opportunity to use a short branch here... sigh.
+	exg		%d0, %d2
+	exg		%d1, %d3
+	exg		%d4, %d5
 	bsr.s	GetClippingCode
-	move.l	%d4, %d6
-	and.l	%d5, %d6
-	bne	LineRejected		| If both points are clipped by the same side, reject the line
 
 CheckClippingCodes:
+	move.l	%d4, %d6
+	and.l	%d5, %d6
+	bne		LineRejected		| If both points are clipped by the same side, reject the line
 	tst.l	%d4
 	bne.s	ClipBottom
 	tst.l	%d5
-	beq	LineAccepted
-	exg	%d0, %d2
-	exg	%d1, %d3
-	exg	%d4, %d5
+	beq		LineAccepted
+	exg		%d0, %d2
+	exg		%d1, %d3
+	exg		%d4, %d5
 
 ClipBottom:
 	tst.b	%d4
@@ -102,9 +102,9 @@ ClipRight:
 GetClippingCode:
 	| Gets the Cohen-Sutherland clipping code for (d0, d1) and stores it in d4
 	| Code Format:
-	| Left Clip	FF 00 00 00
+	| Left Clip		FF 00 00 00
 	| Right Clip	00 FF 00 00
-	| Top Clip	00 00 FF 00
+	| Top Clip		00 00 FF 00
 	| Bottom Clip	00 00 00 FF
 
 	tst.w	%d0				| Test Left Clip

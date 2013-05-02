@@ -26,23 +26,23 @@
 X3D_DrawLine_Clipped:
 	movem.l	%d3 - %d7 / %a2, -(%sp)
 
-	bsr	GetClippingCode		| Just barely missed the opportunity to use a short branch here... sigh.
-	exg	%d0, %d2
-	exg	%d1, %d3
-	exg	%d4, %d5
+	bsr		GetClippingCode		| Just barely missed the opportunity to use a short branch here... sigh.
+	exg		%d0, %d2
+	exg		%d1, %d3
+	exg		%d4, %d5
 	bsr.s	GetClippingCode
-	move.l	%d4, %d6
-	and.l	%d5, %d6
-	bne	Exit		| If both points are clipped by the same side, reject the line
 
 CheckClippingCodes:
+	move.l	%d4, %d6
+	and.l	%d5, %d6
+	bne		Exit		| If both points are clipped by the same side, reject the line
 	tst.l	%d4
 	bne.s	ClipBottom
 	tst.l	%d5
-	beq	LineAccepted
-	exg	%d0, %d2
-	exg	%d1, %d3
-	exg	%d4, %d5
+	beq		LineAccepted
+	exg		%d0, %d2
+	exg		%d1, %d3
+	exg		%d4, %d5
 
 ClipBottom:
 	tst.b	%d4
@@ -88,13 +88,13 @@ ClipLeft:
 ClipRight:
 
 	move.w	%d3, %d6
-	sub.w	%d1, %d6		| dy
+	sub.w	%d1, %d6				| dy
 	move.w	%d0, %d7
 	subi.w	#X3D_SCREEN_MAX_X, %d7	| x1 - ScreenWidth
-	muls.w	%d7, %d6		| (x1 - ScreenWidth) * dy
-	sub.w	%d2, %d0		| dx
-	divs.w	%d0, %d6		| (x1 - ScreenWidth) * (dy / dx)
-	add.w	%d6, %d1		| y1 += (x1 - ScreenWidth) * (dy / dx)
+	muls.w	%d7, %d6				| (x1 - ScreenWidth) * dy
+	sub.w	%d2, %d0				| dx
+	divs.w	%d0, %d6				| (x1 - ScreenWidth) * (dy / dx)
+	add.w	%d6, %d1				| y1 += (x1 - ScreenWidth) * (dy / dx)
 	move.w	#X3D_SCREEN_MAX_X, %d0	| x1 = ScreenWidth
 	bsr.s	GetClippingCode
 	bra.s	CheckClippingCodes
@@ -102,9 +102,9 @@ ClipRight:
 GetClippingCode:
 	| Gets the Cohen-Sutherland clipping code for (d0, d1) and stores it in d4
 	| Code Format:
-	| Left Clip	FF 00 00 00
+	| Left Clip		FF 00 00 00
 	| Right Clip	00 FF 00 00
-	| Top Clip	00 00 FF 00
+	| Top Clip		00 00 FF 00
 	| Bottom Clip	00 00 00 FF
 
 	tst.w	%d0				| Test Left Clip
@@ -126,8 +126,8 @@ LineAccepted:
 
 	cmp.w	%d0, %d2
 	bhi.s	NoExchange
-	exg	%d0, %d2
-	exg	%d1, %d3
+	exg		%d0, %d2
+	exg		%d1, %d3
 
 NoExchange:
 	clr.w	%d4
@@ -136,17 +136,17 @@ NoExchange:
 	cmp.b	(PreviousState, %pc), %d4
 	beq.s	PreviousStateOkay
 
-	lea	(PreviousState, %pc), %a2
+	lea		(PreviousState, %pc), %a2
 	move.b	%d4, (%a2)
 
-	lea	(ColorData, %pc), %a1
+	lea		(ColorData, %pc), %a1
 	lsr.w	#1, %d4
 	lsl.w	#2, %d4
 	adda.w	%d4, %a1
 
 	move.b	(%a1)+, %d4
 
-	lea	(StateChangeAnchor, %pc), %a2
+	lea		(StateChangeAnchor, %pc), %a2
 	move.b	%d4, (DrawLoop_DXGreater - StateChangeAnchor, %a2)	| Masking operator using %d6
 	move.b	%d4, (DrawLoop_DYGreater - StateChangeAnchor, %a2)	|
 	move.b	%d4, (DrawCenter - StateChangeAnchor + 4, %a2)		|
@@ -268,8 +268,8 @@ DYGreater:
 	move.w	#0xE21F, (6, %a2)	|	ror.b	#1, %d7
 	move.w	#0x5249, (10,%a2)	|	addq.w	#1, %a1
 
-	exg	%a0, %a1
-	exg	%d6, %d7
+	exg		%a0, %a1
+	exg		%d6, %d7
 	bra.s	DrawLoop_DYGreater
 
 PositiveSlope:
@@ -296,7 +296,7 @@ DrawLoop_DYGreater:
 	bcc.s	1f
 	subq.w	#1, %a1
 1:
-	dbf	%d0, DrawLoop_DYGreater
+	dbf		%d0, DrawLoop_DYGreater
 	bra.s	DrawCenter
 
 ColorData:

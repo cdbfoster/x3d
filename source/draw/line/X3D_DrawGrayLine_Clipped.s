@@ -26,23 +26,23 @@
 X3D_DrawGrayLine_Clipped:
 	movem.l	%d3 - %d7 / %a2, -(%sp)
 
-	bsr	GetClippingCode		| Just barely missed the opportunity to use a short branch here... sigh.
-	exg	%d0, %d2
-	exg	%d1, %d3
-	exg	%d4, %d5
+	bsr		GetClippingCode		| Just barely missed the opportunity to use a short branch here... sigh.
+	exg		%d0, %d2
+	exg		%d1, %d3
+	exg		%d4, %d5
 	bsr.s	GetClippingCode
-	move.l	%d4, %d6
-	and.l	%d5, %d6
-	bne	Exit		| If both points are clipped by the same side, reject the line
 
 CheckClippingCodes:
+	move.l	%d4, %d6
+	and.l	%d5, %d6
+	bne		Exit		| If both points are clipped by the same side, reject the line
 	tst.l	%d4
 	bne.s	ClipBottom
 	tst.l	%d5
-	beq	LineAccepted
-	exg	%d0, %d2
-	exg	%d1, %d3
-	exg	%d4, %d5
+	beq		LineAccepted
+	exg		%d0, %d2
+	exg		%d1, %d3
+	exg		%d4, %d5
 
 ClipBottom:
 	tst.b	%d4
@@ -102,9 +102,9 @@ ClipRight:
 GetClippingCode:
 	| Gets the Cohen-Sutherland clipping code for (d0, d1) and stores it in d4
 	| Code Format:
-	| Left Clip	FF 00 00 00
+	| Left Clip		FF 00 00 00
 	| Right Clip	00 FF 00 00
-	| Top Clip	00 00 FF 00
+	| Top Clip		00 00 FF 00
 	| Bottom Clip	00 00 00 FF
 
 	tst.w	%d0				| Test Left Clip
@@ -126,8 +126,8 @@ LineAccepted:
 
 	cmp.w	%d0, %d2
 	bhi.s	NoExchange
-	exg	%d0, %d2
-	exg	%d1, %d3
+	exg		%d0, %d2
+	exg		%d1, %d3
 
 NoExchange:
 	move.w	(6 * 4 + 4, %sp), %d4	| Color parameter
@@ -135,10 +135,10 @@ NoExchange:
 	cmp.b	(PreviousState, %pc), %d4
 	beq.s	PreviousStateOkay
 
-	lea	(PreviousState, %pc), %a2
+	lea		(PreviousState, %pc), %a2
 	move.b	%d4, (%a2)
 
-	lea	(StateChangeAnchor, %pc), %a2
+	lea		(StateChangeAnchor, %pc), %a2
 
 	move.b	#0x90, %d5	| Changes a bxxx %d5, <ea> instruction into a bclr %d5, (%a0) instruction
 	lsr.b	#1, %d4
@@ -209,7 +209,7 @@ SameByte:
 	add.w	%d4, %a0
 	add.w	%d4, %a1
 SameRow:
-	dbf	%d0, DrawLoop_DXGreater
+	dbf		%d0, DrawLoop_DXGreater
 
 Exit:
 	movem.l (%sp)+, %d3 - %d7 / %a2
@@ -236,7 +236,7 @@ DrawLoop_DYGreater:
 	addq.w	#1, %a1
 SameByte2:
 SameColumn:
-	dbf	%d0, DrawLoop_DYGreater
+	dbf		%d0, DrawLoop_DYGreater
 	bra.s	Exit
 
 PreviousState:

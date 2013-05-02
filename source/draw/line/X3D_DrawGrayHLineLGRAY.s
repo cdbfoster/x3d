@@ -27,7 +27,7 @@ X3D_DrawGrayHLineLGRAY:
 	move.l	%d3, -(%sp)
 	cmp.w	%d0, %d1	| Make sure x1 is less than x2
 	bge.s	NoExchange
-	exg	%d0, %d1
+	exg		%d0, %d1
 
 NoExchange:
 	tst.w	%d1		| Make sure the line is on-screen

@@ -24,6 +24,7 @@
 #include "../../api/external/X3D_Render.h"
 #include "../../api/internal/Render.h"
 
+X3D_RESULT Perspective_GetViewFrustum(X3D_Plane *ViewFrustum);
 X3D_RESULT Perspective_ProjectVertices(X3D_Vertices *Vertices, X3D_Vertices *ResultVertices);
 
 #endif

@@ -35,6 +35,7 @@ X3D_RESULT InitializeProjectionMode(X3D_Parameters *Parameters)
 	switch (Parameters->ProjectionMode)
 	{
 	case X3D_PROJECTION_PERSPECTIVE:
+		Render.ProjectionMode_GetViewFrustum = Perspective_GetViewFrustum;
 		Render.ProjectionMode_ProjectVertices = Perspective_ProjectVertices;
 		break;
 	case X3D_PROJECTION_ORTHOGRAPHIC:

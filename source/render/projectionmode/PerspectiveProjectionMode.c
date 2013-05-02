@@ -29,6 +29,47 @@
 
 #include "PerspectiveProjectionMode.h"
 
+X3D_RESULT Perspective_GetViewFrustum(X3D_Plane *ViewFrustum)
+{
+	unsigned char AngleH = RenderCamera.User.HorizontalFOV / 2;
+	unsigned char AngleV = RenderCamera.User.VerticalFOV / 2;
+
+	short SinH = X3D_Sin(AngleH), CosH = X3D_Cos(AngleH);
+	short SinV = X3D_Sin(AngleV), CosV = X3D_Cos(AngleV);
+
+	ViewFrustum[X3D_FRUSTUM_NEAR].Normal.x = 0;
+	ViewFrustum[X3D_FRUSTUM_NEAR].Normal.y = 0;
+	ViewFrustum[X3D_FRUSTUM_NEAR].Normal.z = 256;
+	ViewFrustum[X3D_FRUSTUM_NEAR].PlaneConstant = (long)RenderCamera.User.NearClip << 8;
+
+	ViewFrustum[X3D_FRUSTUM_FAR].Normal.x = 0;
+	ViewFrustum[X3D_FRUSTUM_FAR].Normal.y = 0;
+	ViewFrustum[X3D_FRUSTUM_FAR].Normal.z = -256;
+	ViewFrustum[X3D_FRUSTUM_FAR].PlaneConstant = -((long)RenderCamera.User.FarClip << 8);
+
+	ViewFrustum[X3D_FRUSTUM_LEFT].Normal.x = CosH;
+	ViewFrustum[X3D_FRUSTUM_LEFT].Normal.y = 0;
+	ViewFrustum[X3D_FRUSTUM_LEFT].Normal.z = SinH;
+	ViewFrustum[X3D_FRUSTUM_LEFT].PlaneConstant = 0;
+
+	ViewFrustum[X3D_FRUSTUM_RIGHT].Normal.x = -CosH;
+	ViewFrustum[X3D_FRUSTUM_RIGHT].Normal.y = 0;
+	ViewFrustum[X3D_FRUSTUM_RIGHT].Normal.z = SinH;
+	ViewFrustum[X3D_FRUSTUM_RIGHT].PlaneConstant = 0;
+
+	ViewFrustum[X3D_FRUSTUM_TOP].Normal.x = 0;
+	ViewFrustum[X3D_FRUSTUM_TOP].Normal.y = -CosV;
+	ViewFrustum[X3D_FRUSTUM_TOP].Normal.z = SinV;;
+	ViewFrustum[X3D_FRUSTUM_TOP].PlaneConstant = 0;
+
+	ViewFrustum[X3D_FRUSTUM_BOTTOM].Normal.x = 0;
+	ViewFrustum[X3D_FRUSTUM_BOTTOM].Normal.y = CosV;
+	ViewFrustum[X3D_FRUSTUM_BOTTOM].Normal.z = SinV;
+	ViewFrustum[X3D_FRUSTUM_BOTTOM].PlaneConstant = 0;
+
+	return X3D_SUCCESS;
+}
+
 X3D_RESULT Perspective_ProjectVertices(X3D_Vertices *Vertices, X3D_Vertices *ResultVertices)
 {
 	if (Vertices != ResultVertices && ResultVertices->Vertices == NULL)

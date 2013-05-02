@@ -26,6 +26,7 @@
 #include "../api/external/X3D_Render.h"
 
 #include "RenderCamera.h"
+#include "RenderFunctions.h"
 
 RenderCameraType RenderCamera;
 
@@ -38,55 +39,17 @@ X3D_RESULT X3D_UpdateRenderCamera(X3D_Camera *Camera)
 
 	X3D_InvertTransform(&Camera->Transform, &RenderCamera.ViewTransform);
 
-	unsigned char AngleH = RenderCamera.User.HorizontalFOV / 2;
-	unsigned char AngleV = RenderCamera.User.VerticalFOV / 2;
-
-	short SinH = X3D_Sin(AngleH), CosH = X3D_Cos(AngleH);
-	short SinV = X3D_Sin(AngleV), CosV = X3D_Cos(AngleV);
-
 	X3D_Plane *ViewFrustum = RenderCamera.ViewFrustum;
-	X3D_Vec3 PlaneNormal[6];
 
-	PlaneNormal[X3D_FRUSTUM_NEAR].x = 0;
-	PlaneNormal[X3D_FRUSTUM_NEAR].y = 0;
-	PlaneNormal[X3D_FRUSTUM_NEAR].z = 256;
-	ViewFrustum[X3D_FRUSTUM_NEAR].PlaneConstant = (long)RenderCamera.User.NearClip << 8;
-
-	PlaneNormal[X3D_FRUSTUM_FAR].x = 0;
-	PlaneNormal[X3D_FRUSTUM_FAR].y = 0;
-	PlaneNormal[X3D_FRUSTUM_FAR].z = -256;
-	ViewFrustum[X3D_FRUSTUM_FAR].PlaneConstant = -((long)RenderCamera.User.FarClip << 8);
-
-	PlaneNormal[X3D_FRUSTUM_LEFT].x = CosH;
-	PlaneNormal[X3D_FRUSTUM_LEFT].y = 0;
-	PlaneNormal[X3D_FRUSTUM_LEFT].z = SinH;
-	ViewFrustum[X3D_FRUSTUM_LEFT].PlaneConstant = 0;
-
-	PlaneNormal[X3D_FRUSTUM_RIGHT].x = -CosH;
-	PlaneNormal[X3D_FRUSTUM_RIGHT].y = 0;
-	PlaneNormal[X3D_FRUSTUM_RIGHT].z = SinH;
-	ViewFrustum[X3D_FRUSTUM_RIGHT].PlaneConstant = 0;
-
-	PlaneNormal[X3D_FRUSTUM_TOP].x = 0;
-	PlaneNormal[X3D_FRUSTUM_TOP].y = -CosV;
-	PlaneNormal[X3D_FRUSTUM_TOP].z = SinV;;
-	ViewFrustum[X3D_FRUSTUM_TOP].PlaneConstant = 0;
-
-	PlaneNormal[X3D_FRUSTUM_BOTTOM].x = 0;
-	PlaneNormal[X3D_FRUSTUM_BOTTOM].y = CosV;
-	PlaneNormal[X3D_FRUSTUM_BOTTOM].z = SinV;
-	ViewFrustum[X3D_FRUSTUM_BOTTOM].PlaneConstant = 0;
+	Render.ProjectionMode_GetViewFrustum(ViewFrustum);
 
 	unsigned char Plane;
 	for (Plane = 0; Plane < 6; Plane++)
 	{
-		//X3D_TransformVec3(&Camera->Transform, &PlaneNormal[Plane], &ViewFrustum[Plane].Normal);
-		X3D_MultiplyMatrixVec3(&Camera->Transform.Rotation, &PlaneNormal[Plane], &ViewFrustum[Plane].Normal);
+		X3D_MultiplyMatrixVec3(&Camera->Transform.Rotation, &ViewFrustum[Plane].Normal, &ViewFrustum[Plane].Normal);
 		ViewFrustum[Plane].PlaneConstant += (long)ViewFrustum[Plane].Normal.x * Camera->Transform.Translation.x +
 											(long)ViewFrustum[Plane].Normal.y * Camera->Transform.Translation.y +
 											(long)ViewFrustum[Plane].Normal.z * Camera->Transform.Translation.z;
-
-		//printf("%d, %d, %d, %ld\n", ViewFrustum[Plane].Normal.x, ViewFrustum[Plane].Normal.y, ViewFrustum[Plane].Normal.z, ViewFrustum[Plane].PlaneConstant);
 	}
 
 	return X3D_SUCCESS;
@@ -114,7 +77,7 @@ X3D_RESULT FrustumCullTriangles(X3D_Vertices *Vertices, X3D_Triangles *Triangles
 		unsigned char OutsideFrustum = 0;	// 1 if at least one vertex of the triangle is outside the frustum
 		unsigned char SpanningFrustum = 0;  // 1 if two adjacent vertices were clipped by different planes
 
-		unsigned char OldState = 0;
+		char OldState = 0;
 
 		unsigned char Vertex;
 		for (Vertex = 0; Vertex < 3; Vertex++)
@@ -135,7 +98,7 @@ X3D_RESULT FrustumCullTriangles(X3D_Vertices *Vertices, X3D_Triangles *Triangles
 
 		if (InsideFrustum && !OutsideFrustum)
 			TrianglesToCopy[TrianglesToCopyCount++] = Triangle;
-		else if ((InsideFrustum && OutsideFrustum) || SpanningFrustum)
+		else if (InsideFrustum && (OutsideFrustum || SpanningFrustum))
 			TrianglesToClip[TrianglesToClipCount++] = Triangle;
 	}
 

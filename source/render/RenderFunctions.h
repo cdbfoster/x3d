@@ -29,10 +29,11 @@ typedef struct {
 	X3D_RESULT (*DisplayMode_Draw)(X3D_Vertices *Vertices, X3D_Polygons *Polygons);
 	X3D_RESULT (*DisplayMode_Cleanup)();
 	X3D_RESULT (*DisplayMode_Terminate)();
+	X3D_RESULT (*ProjectionMode_GetViewFrustum)(X3D_Plane *ViewFrustum);
 	X3D_RESULT (*ProjectionMode_ProjectVertices)(X3D_Vertices *Vertices, X3D_Vertices *ResultVertices);
 	X3D_RESULT (*BackfaceCullMode_CullPolygons)(X3D_Vertices *Vertices, X3D_Polygons *Polygons, X3D_Polygons *ResultPolygons);
 
-	void *DisplayMode_Data;
+	void *DisplayMode_Data; // Do we need this?
 } RenderFunctions;
 
 extern RenderFunctions Render;

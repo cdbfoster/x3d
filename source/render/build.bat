@@ -13,6 +13,7 @@ tigcc WireframeDisplayMode.c ^
 cd ..
 cd projectionmode
 tigcc PerspectiveProjectionMode.c ^
+      OrthographicProjectionMode.c ^
       -c -Os -Wall -W -Wwrite-strings -ffunction-sections -fdata-sections -DMIN_AMS=100
 cd ..
 tigcc BackfaceCullMode.o ^
@@ -24,6 +25,7 @@ tigcc BackfaceCullMode.o ^
       displaymode\WireframeDisplayMode.o ^
       displaymode\PainterDisplayMode.o ^
       projectionmode\PerspectiveProjectionMode.o ^
+      projectionmode\OrthographicProjectionMode.o ^
       -ar -o X3D_Render -Os -Wall -W -Wwrite-strings -ffunction-sections -fdata-sections -DMIN_AMS=100
 echo Y | del BackfaceCullMode.o ^
       DisplayMode.o ^
@@ -33,4 +35,5 @@ echo Y | del BackfaceCullMode.o ^
       RenderFunctions.o ^
       displaymode\WireframeDisplayMode.o ^
       displaymode\PainterDisplayMode.o ^
-      projectionmode\PerspectiveProjectionMode.o
+      projectionmode\PerspectiveProjectionMode.o ^
+      projectionmode\OrthographicProjectionMode.o

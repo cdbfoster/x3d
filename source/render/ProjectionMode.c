@@ -28,7 +28,7 @@
 #include "ProjectionMode.h"
 
 #include "projectionmode/PerspectiveProjectionMode.h"
-//#include "projectionmode/OrthographicProjectionMode.h"
+#include "projectionmode/OrthographicProjectionMode.h"
 
 X3D_RESULT InitializeProjectionMode(X3D_Parameters *Parameters)
 {
@@ -39,6 +39,9 @@ X3D_RESULT InitializeProjectionMode(X3D_Parameters *Parameters)
 		Render.ProjectionMode_ProjectVertices = Perspective_ProjectVertices;
 		break;
 	case X3D_PROJECTION_ORTHOGRAPHIC:
+		Render.ProjectionMode_GetViewFrustum = Orthographic_GetViewFrustum;
+		Render.ProjectionMode_ProjectVertices = Orthographic_ProjectVertices;
+		break;
 	default:
 		return X3D_FAILURE;
 	}

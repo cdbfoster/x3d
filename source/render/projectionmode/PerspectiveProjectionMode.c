@@ -59,7 +59,7 @@ X3D_RESULT Perspective_GetViewFrustum(X3D_Plane *ViewFrustum)
 
 	ViewFrustum[X3D_FRUSTUM_TOP].Normal.x = 0;
 	ViewFrustum[X3D_FRUSTUM_TOP].Normal.y = -CosV;
-	ViewFrustum[X3D_FRUSTUM_TOP].Normal.z = SinV;;
+	ViewFrustum[X3D_FRUSTUM_TOP].Normal.z = SinV;
 	ViewFrustum[X3D_FRUSTUM_TOP].PlaneConstant = 0;
 
 	ViewFrustum[X3D_FRUSTUM_BOTTOM].Normal.x = 0;
@@ -97,7 +97,6 @@ X3D_RESULT Perspective_ProjectVertices(X3D_Vertices *Vertices, X3D_Vertices *Res
 			ResultVertices->Vertices[Vertex].y = Vertices->Vertices[Vertex].y;
 			ResultVertices->Vertices[Vertex].z = 0;
 		}
-
 	}
 
 	return X3D_SUCCESS;

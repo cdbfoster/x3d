@@ -37,7 +37,8 @@ X3D_RESULT X3D_UpdateRenderCamera(X3D_Camera *Camera)
 
 	memcpy(&RenderCamera.User, Camera, sizeof(X3D_Camera));
 
-	X3D_InvertTransform(&Camera->Transform, &RenderCamera.ViewTransform);
+	X3D_Transform *Transform = &RenderCamera.User.Transform;
+	X3D_InvertTransform(Transform, &RenderCamera.ViewTransform);
 
 	X3D_Plane *ViewFrustum = RenderCamera.ViewFrustum;
 
@@ -46,10 +47,10 @@ X3D_RESULT X3D_UpdateRenderCamera(X3D_Camera *Camera)
 	unsigned char Plane;
 	for (Plane = 0; Plane < 6; Plane++)
 	{
-		X3D_MultiplyMatrixVec3(&Camera->Transform.Rotation, &ViewFrustum[Plane].Normal, &ViewFrustum[Plane].Normal);
-		ViewFrustum[Plane].PlaneConstant += (long)ViewFrustum[Plane].Normal.x * Camera->Transform.Translation.x +
-											(long)ViewFrustum[Plane].Normal.y * Camera->Transform.Translation.y +
-											(long)ViewFrustum[Plane].Normal.z * Camera->Transform.Translation.z;
+		X3D_MultiplyMatrixVec3(&Transform->Rotation, &ViewFrustum[Plane].Normal, &ViewFrustum[Plane].Normal);
+		ViewFrustum[Plane].PlaneConstant += (long)ViewFrustum[Plane].Normal.x * Transform->Translation.x +
+											(long)ViewFrustum[Plane].Normal.y * Transform->Translation.y +
+											(long)ViewFrustum[Plane].Normal.z * Transform->Translation.z;
 	}
 
 	return X3D_SUCCESS;
